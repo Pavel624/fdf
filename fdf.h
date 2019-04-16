@@ -10,7 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <math.h>
-#include <mlx.h>
+#include "./minilibx/mlx.h"
+#include <X11/Xlib.h>
 #include <stdlib.h>
 #include <fcntl.h>
+
+typedef struct s_fdf
+{
+    int fd;
+    void *mlx;
+    void *window;
+}               fdf;
+
+void parser(fdf map);

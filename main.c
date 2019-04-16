@@ -10,32 +10,45 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <X11/Xlib.h>
 #include "fdf.h"
-#include "libft.h"
 #include <stdio.h>
+
+//void parser(fdf map)
+//{
+   // if (!reader(map))
+   // {
+       // ft_putstr("error\n");
+       // map.mlx = mlx_init();
+        //exit(EXIT_SUCCESS);
+   // }
+    
+//}
 
 int main(int argc, char *argv[])
 {
-    int fd;
-    void *mlx;
-    void *window;
+    fdf map;
 
+    map.mlx = mlx_init();
+   map.window = mlx_new_window(map.mlx, 1000, 1000, "Title");
+   mlx_loop(map.mlx);
     if (argc != 2)
     {
         ft_putstr("usage: ./fdf input file\n");
         exit(EXIT_SUCCESS);
     }
-    fd = open(argv[1],O_RDONLY);
-    if (fd < 0)
+    map.fd = open(argv[1],O_RDONLY);
+    if (map.fd < 0)
     {
         ft_putstr("invalid file name\n");
         exit(EXIT_SUCCESS);
     }
+   // else
+      //  parser(map);
 
-    mlx = mlx_init();
-    window = mlx_new_window(mlx, 1000, 1000, "Title");
-    mlx_pixel_put (mlx, window, 100, 100, 255 );
-    mlx_loop(mlx);
+   
+   // mlx_pixel_put (mlx, window, 100, 100, 255 );
+   // mlx_loop(mlx);
     
     return (0);
 }
