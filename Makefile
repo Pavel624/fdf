@@ -1,10 +1,10 @@
 NAME = fdf
 
-SRC  = main.c
+SRC  = main.c reader.c
 
 OBJ  = $(SRC:.c=.o)
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -g
 
 FRAMEWORKS = -framework OpenGL -framework AppKit
 
