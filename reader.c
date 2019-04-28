@@ -12,6 +12,19 @@
 
 #include "fdf.h"
 
+void				free_fdf(fdf *elem)
+{
+    int i;
+
+    i = 0;
+    while (i < elem->lines)
+    {
+        free (elem->map[i]);
+        i++;
+    }
+    free (elem->map);
+}
+
 int check_line(char *line)
 {
     int i;
@@ -21,14 +34,16 @@ int check_line(char *line)
     l = 0;
     while (line[i])
     {
-        if (!ft_isdigit(line[i]))
+        if (ft_isdigit(line[i]))
+        {
+             l = 0;
+        }
+        else
         {
             if (line[i] != ' ' || l == 1)
                 return (0);
             l = 1;
         }
-        else
-            l = 0;
         i++;
     }
     return (1);
@@ -44,10 +59,7 @@ int alloc_line(char *line, fdf *elem)
     i = 0;
     split = ft_strsplit(line,' ');
     while (split[i])
-    {
         i++;
-        free(split[i]);
-    }
     if (elem->numbers == 0)
         elem->numbers = i;
     else

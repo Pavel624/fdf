@@ -10,13 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <math.h>
-#include "./minilibx/mlx.h"
-#include <stdlib.h>
-#include <fcntl.h>
-#define WIDTH 1920
-#define HEIGHT 1080
+#ifndef FDF_H
+# define FDF_H
+
+# include "./libft/libft.h"
+# include <math.h>
+# include "./minilibx/mlx.h"
+# include <stdlib.h>
+# include <fcntl.h>
+# define WIDTH 1080
+# define HEIGHT 1920
+# define TEXT_COLOR 0xEAEAEA
 
 typedef struct s_fdf
 {
@@ -27,6 +31,7 @@ typedef struct s_fdf
     int numbers;
     void *mlx;
     void *window;
+    void *new_window;
 }               fdf;
 
 void parser(fdf *elem);
@@ -34,3 +39,11 @@ int reader(fdf *elem);
 int alloc_file(fdf *elem);
 int alloc_line(char *line, fdf *elem);
 int check_line(char *line);
+void free_fdf(fdf *elem);
+void mlx_setup(fdf *elem);
+int deal_key(int key, fdf *elem);
+void draw_elem(fdf *elem);
+void menu(fdf *elem);
+void bresenham_algorithm(fdf *elem, int x0, int y0, int x1, int y1);
+
+#endif

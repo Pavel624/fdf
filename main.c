@@ -24,7 +24,7 @@ void parser(fdf *elem)
     {
         ft_putstr("ok\n");
     }
-    //fdf(elem);
+    mlx_setup(elem);
 }
 
 int main(int argc, char *argv[])
@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
         }
         printf("\n");
     }
+    free_fdf(&elem);
     //if (elem.fd < 0)
     //{
     //    ft_putstr("invalid file name\n");

@@ -1,15 +1,15 @@
 NAME = fdf
 
-SRC  = main.c reader.c
+SRC  = main.c reader.c additional.c drawer.c
 
 OBJ  = $(SRC:.c=.o)
 
 FLAGS = -Wall -Werror -Wextra -g
 
-FRAMEWORKS = -framework OpenGL -framework AppKit
+#LIBFLAGS = -framework OpenGL -framework AppKit
+LIBFLAGS = -lmlx -lXext -lX11 minilibx/libmlx.a
 
 LIBFT = libft/libft.a
-MINILIBX = minilibx/libmlx.a
 
 INC_LIB = libft
 
@@ -18,7 +18,7 @@ HEAD = libft/libft.h
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
-	gcc $(FLAGS) $(OBJ) $(LIBFT) $(MINILIBX) $(FRAMEWORKS) -I$(INC_LIB) -o $(NAME)
+	gcc $(FLAGS) $(OBJ) $(LIBFT) $(LIBFLAGS) -I$(INC_LIB) -o $(NAME)
 	
 $(LIBFT):
 	make -C libft/
