@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void menu(fdf *elem)
+void menu(t_fdf *elem)
 {
     int y;
 
@@ -27,18 +27,28 @@ void menu(fdf *elem)
 }
 
 
-int deal_key(int key, fdf *elem)
+int deal_key(int key, t_fdf *elem)
 {
-    if (key == 0xff1b)
+    if (key == 53)
         exit(EXIT_SUCCESS);
     return (0);
     elem->name = "lel";
 }
 
-void mlx_setup(fdf *elem)
+t_fdf *init_elem(t_list *array_list,char *name)
 {
+    t_fdf *elem;
+
+    elem = (t_fdf *)malloc(sizeof(t_fdf));
     elem->mlx = mlx_init();
-    elem->window = mlx_new_window(elem->mlx, WIDTH, HEIGHT, "FDF");
+    elem->window = mlx_new_window(elem->mlx, WIDTH, HEIGHT, name);
+    elem->map=array_list;
+    return(elem);
+}
+
+void mlx_setup(t_fdf *elem)
+{
+    
     menu(elem);
     draw_elem(elem);
     mlx_key_hook(elem->window,deal_key,elem);

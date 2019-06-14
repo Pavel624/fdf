@@ -11,19 +11,7 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void				free_fdf(fdf *elem)
-{
-    int i;
-
-    i = 0;
-    while (i < elem->lines)
-    {
-        free (elem->map[i]);
-        i++;
-    }
-    free (elem->map);
-}
+#include <stdio.h>
 
 int check_line(char *line)
 {
@@ -49,7 +37,7 @@ int check_line(char *line)
     return (1);
 }
 
-int alloc_line(char *line, fdf *elem)
+int alloc_line(char *line, t_fdf *elem)
 {
     int i;
     char **split;
@@ -60,64 +48,92 @@ int alloc_line(char *line, fdf *elem)
     split = ft_strsplit(line,' ');
     while (split[i])
         i++;
-    if (elem->numbers == 0)
-        elem->numbers = i;
+    if (elem->width == 0)
+        elem->width = i;
     else
     {
-        if (i != elem->numbers)
+        if (i != elem->width)
             return (0);
     }
     free (split);
-    elem->lines++;
+    elem->height++;
     return (1);
     
 }
 
-int alloc_file(fdf *elem)
+int validate_map(t_list **array_list)
 {
-    int bytes;
-    char *line;
+	t_list	*tmp;
+	size_t	len;
 
-    elem->lines = 0;
-    elem->numbers = 0;
-    while ((bytes = get_next_line(elem->fd, &line)) != 0)
-    {
-        if (!alloc_line(line, elem))
-        {
-            close (elem->fd);
-            return (0);
-        }
-    }
-    elem->map = (int **)malloc(sizeof(int *) * elem->lines);
-    close (elem->fd);
-    elem->fd = open(elem->name,O_RDONLY);
-    return (1);
+	if (*array_list)
+	{
+		tmp = *array_list;
+		len = tmp->content_size;
+		while (tmp)
+		{
+			if (tmp->content_size != len)
+			{
+				ft_memdel((void **) &tmp);
+				return (0);
+			}
+			tmp = tmp->next;
+		}
+		return (1);
+	}
+	return (0);
 }
 
-int reader(fdf *elem)
+static void	ft_lstcat(t_list **alst, t_list *new)
 {
-    int bytes;
+	t_list *scout;
+
+	if (*alst && new)
+	{
+		scout = *alst;
+		while (scout->next != NULL)
+			scout = scout->next;
+		scout->next = new;
+	}
+	else
+		*alst = new;
+}
+
+static int *create_array(char **split, int size)
+{
+    int	*arr;
+	int	i;
+
+	i = 0;
+	arr = ft_memalloc(sizeof(int) * size);
+	while (i < size)
+	{
+		arr[i] = ft_atoi(split[i]);
+		i++;
+	}
+	return (arr);
+}
+
+//lstreverse doesn't work for some reason, need to adjuct it in the future
+
+void reader(t_list **array_list, int fd)
+{
     char *line;
     char **split;
     int i;
-    int j;
+    int *arr;
 
-    i = 0;
-    if (!(alloc_file(elem)))
-        return (0);
-    while ((bytes = get_next_line(elem->fd, &line)) != 0)
+    *array_list = NULL;
+    while (get_next_line(fd, &line))
     {
-        j = 0;
+        i = 0;
         split = ft_strsplit(line,' ');
-        elem->map[i] = (int *)malloc(sizeof(int) * elem->numbers);
-        while (split[j])
-        {
-            elem->map[i][j] = ft_atoi(split[j]);
-            free(split[j]);
-            j++;
-        }
+        while (split[i])
+            i++;
+        arr = create_array(split,i);
+        ft_lstcat(array_list,ft_lstnew(arr,sizeof(int) * i));
         free(split);
-        i++;
+        free(arr);
     }
-    return(bytes == -1 ? 0 : 1);
+    //ft_lstreverse(*array_list);
 }

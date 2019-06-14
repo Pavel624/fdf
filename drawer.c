@@ -16,7 +16,7 @@
 // Bresenham line drawing algorithm
 */
 
-void bresenham_algorithm(fdf *elem, int x0, int y0, int x1, int y1)
+void bresenham_algorithm(t_fdf *elem, int x0, int y0, int x1, int y1)
 {
     int	dx, dy;
     int temp, x, y;
@@ -41,7 +41,7 @@ void bresenham_algorithm(fdf *elem, int x0, int y0, int x1, int y1)
 }
 
 
-void draw_elem(fdf *elem)
+void draw_elem(t_fdf *elem)
 {
     bresenham_algorithm(elem,100,100,500,300);
 }
