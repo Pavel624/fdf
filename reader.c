@@ -13,127 +13,75 @@
 #include "fdf.h"
 #include <stdio.h>
 
-int check_line(char *line)
+static t_point get_point(t_map *map, char *split, int row, int column)
 {
-    int i;
-    int l;
+    t_point point;
 
-    i = 0;
-    l = 0;
-    while (line[i])
-    {
-        if (ft_isdigit(line[i]))
-        {
-             l = 0;
-        }
-        else
-        {
-            if (line[i] != ' ' || l == 1)
-                return (0);
-            l = 1;
-        }
-        i++;
-    }
-    return (1);
+    point.x = (double) column;
+    point.y = (double) row;
+    point.z = (double) ft_atoi(split);
+    point.w = 1;
+    point.color = 0x00FFFFFF;
+    if (point.z > map->max_z)
+        map->max_z = point.z;
+    if (point.z < map->min_z)
+        map->min_z = point.z;
+    return (point);
 }
 
-int alloc_line(char *line, t_fdf *elem)
+static int fill_struct(t_map *map, t_list *data)
 {
-    int i;
+    t_list *current_elem;
+    int column;
+    int row;
     char **split;
 
-    if (!check_line(line))
-        return (0);
-    i = 0;
-    split = ft_strsplit(line,' ');
-    while (split[i])
-        i++;
-    if (elem->width == 0)
-        elem->width = i;
-    else
+    current_elem = data;
+    row = 0;
+    while (row < map->height)
     {
-        if (i != elem->width)
-            return (0);
+        column = 0;
+        split = ft_strsplit((char *) current_elem->content, ' ');
+        while (column < map->width)
+        {
+            map->points[row * map->width + column] = get_point(map, split[column], row, column);
+            column++;
+        }
+        row++;
+        current_elem = current_elem->next;
     }
-    free (split);
-    elem->height++;
     return (1);
-    
 }
 
-int validate_map(t_list **array_list)
+static int get_line(t_map *map, t_list **data, int fd)
 {
-	t_list	*tmp;
-	size_t	len;
-
-	if (*array_list)
-	{
-		tmp = *array_list;
-		len = tmp->content_size;
-		while (tmp)
-		{
-			if (tmp->content_size != len)
-			{
-				ft_memdel((void **) &tmp);
-				return (0);
-			}
-			tmp = tmp->next;
-		}
-		return (1);
-	}
-	return (0);
-}
-
-static void	ft_lstcat(t_list **alst, t_list *new)
-{
-	t_list *scout;
-
-	if (*alst && new)
-	{
-		scout = *alst;
-		while (scout->next != NULL)
-			scout = scout->next;
-		scout->next = new;
-	}
-	else
-		*alst = new;
-}
-
-static int *create_array(char **split, int size)
-{
-    int	*arr;
-	int	i;
-
-	i = 0;
-	arr = ft_memalloc(sizeof(int) * size);
-	while (i < size)
-	{
-		arr[i] = ft_atoi(split[i]);
-		i++;
-	}
-	return (arr);
-}
-
-//lstreverse doesn't work for some reason, need to adjuct it in the future
-
-void reader(t_list **array_list, int fd)
-{
+    t_list *line_data;
+    int bytes;
     char *line;
-    char **split;
-    int i;
-    int *arr;
 
-    *array_list = NULL;
-    while (get_next_line(fd, &line))
+    line_data = NULL;
+    while ((bytes = get_next_line(fd, &line) > 0))
     {
-        i = 0;
-        split = ft_strsplit(line,' ');
-        while (split[i])
-            i++;
-        arr = create_array(split,i);
-        ft_lstcat(array_list,ft_lstnew(arr,sizeof(int) * i));
-        free(split);
-        free(arr);
+        if (map->width == 0)
+            map->width = (int) ft_count_words(line, ' ');
+        else if (map->width != (int) ft_count_words(line, ' '))
+            return (0);
+        line_data = ft_lstnew(line, ft_strlen(line) + 1);
+        ft_lstadd(data,line_data);
+        map->height++;
     }
-    //ft_lstreverse(*array_list);
+    return (1);
+}
+
+int reader(t_map *array_list, int fd)
+{
+    t_list *map;
+
+    map = NULL;
+    array_list->height = 0;
+    array_list->width = 0;
+    if (!get_line(array_list,&map,fd))
+        return (0);
+    array_list->points = (t_point *)malloc(array_list->height * array_list->width * sizeof(t_point));
+    return (fill_struct(array_list, map));
 }
