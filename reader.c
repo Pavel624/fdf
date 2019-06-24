@@ -38,6 +38,8 @@ static int fill_struct(t_map *map, t_list *data)
 
     current_elem = data;
     row = 0;
+    map->max_z = 0;
+    map->min_z = 0;
     while (row < map->height)
     {
         column = 0;

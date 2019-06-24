@@ -1,12 +1,12 @@
 NAME = fdf
 
-SRC  = main.c reader.c additional.c drawer.c
+SRC  = main.c reader.c additional.c drawer.c matrixes.c initialize.c
 
 OBJ  = $(SRC:.c=.o)
 
 FLAGS = -Wall -Werror -Wextra -g
 
-LIBFLAGS = -framework OpenGL -framework AppKit -L minilibx -I minilibx -lmlx
+LIBFLAGS = -framework OpenGL -framework AppKit -L minilibx -l mlx
 #LIBFLAGS = -lmlx -lXext -lX11 minilibx/libmlx.a
 
 LIBFT = libft/libft.a

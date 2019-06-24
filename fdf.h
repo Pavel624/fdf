@@ -32,6 +32,8 @@
 # define KEY_ZOOM_IN 69
 # define KEY_ZOOM_OUT 78
 
+# define KEY_R 15
+
 typedef struct s_point
 {
     double x;
@@ -140,8 +142,12 @@ t_matrix	*rotate_x(double theta, int key);
 
 void init_elem(t_fdf *elem, char* name);
 
+int key_down(int key, t_fdf *fdf);
+int key_trans(int key, t_fdf *fdf);
+
+void reset_fdf(t_fdf *elem);
+
 void clear_image(t_fdf *fdf, t_image *image);
-void free_fdf(t_fdf *elem);
 void mlx_setup(t_fdf *elem);
 int deal_key(int key, t_fdf *elem);
 void menu(t_fdf *elem);

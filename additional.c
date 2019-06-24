@@ -27,6 +27,53 @@ void menu(t_fdf *elem)
     mlx_string_put(elem->mlx,elem->window, 15, y+=20, TEXT_COLOR, "Exit: ESC");
 }
 
+static void free_fdf(t_fdf *fdf)
+{
+    free(&(fdf->map).points);
+    //free(fdf->map);
+    mlx_destroy_image(fdf->mlx, fdf->image.image);
+}
+
+int key_down(int key, t_fdf *fdf)
+{
+    if (key == KEY_ESC)
+    {
+        free_fdf(fdf);
+        exit(EXIT_SUCCESS);
+    }
+    if (key == KEY_R)
+        reset_fdf(fdf);
+    //render_image(fdf);
+    return (0);
+}
+
+void reset_fdf(t_fdf *elem)
+{
+    elem->x_rotation = 0;
+    elem->y_rotation = 0;
+    elem->z_rotation = 0;
+    elem->x_shift = 0;
+    elem->y_shift = 0;
+    elem->z_shift = 0;
+    elem->x_scale = 30;
+    elem->y_scale = 30;
+    elem->z_scale = 30;
+}
+
+int key_trans(int key, t_fdf *fdf)
+{
+    if (key == KEY_UP)
+        fdf->y_shift += 5;
+    if (key == KEY_DOWN)
+        fdf->y_shift -= 5;
+    if (key == KEY_RIGHT)
+        fdf->x_shift += 5;
+    if (key == KEY_LEFT)
+        fdf->x_shift -= 5;
+    render_image(fdf);
+    return (0);
+}
+
 void init_point(t_point *point)
 {
     point->x = 0;
@@ -62,20 +109,14 @@ t_point multiplicate_matrixes(t_matrix *matrix, t_point point)
     return (new_point);
 }
 
+
+
 void init_elem(t_fdf *elem, char* name)
 {
     elem->mlx = mlx_init();
     elem->window = mlx_new_window(elem->mlx, WIDTH, HEIGHT, name);
     initialize_image(elem);
-    elem->x_rotation = 0;
-    elem->y_rotation = 0;
-    elem->z_rotation = 0;
-    elem->x_shift = 0;
-    elem->y_shift = 0;
-    elem->z_shift = 0;
-    elem->x_scale = 30;
-    elem->y_scale = 30;
-    elem->z_scale = 30;
+    reset_fdf(elem);
     elem->color_max = 0xffffff;
     elem->color_min = 0xffffff;
 }

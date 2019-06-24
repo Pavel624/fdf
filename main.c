@@ -33,7 +33,8 @@ int main(int argc, char *argv[])
     close(fd);
     init_elem(&elem, argv[1]);
     render_image(&elem);
-
+    mlx_key_hook(elem.window, key_down, &elem);
     mlx_loop((&elem)->mlx);
+    printf("it's ok");
     return (0);
 }
