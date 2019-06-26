@@ -56,6 +56,7 @@ typedef struct s_line
     int error;
     int error2;
     double color_grad; 
+    int color;
 }               t_line;
 
 typedef struct s_plot
