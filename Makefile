@@ -4,10 +4,10 @@ SRC  = main.c reader.c additional.c drawer.c matrixes.c initialize.c
 
 OBJ  = $(SRC:.c=.o)
 
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -g
 
-#LIBFLAGS = -framework OpenGL -framework AppKit -L minilibx -l mlx -lm
-LIBFLAGS = -lmlx -lXext -lX11 minilibx/libmlx.a -lm
+LIBFLAGS = -framework OpenGL -framework AppKit -lm -lmlx #-L minilibx -l mlx -lm # macOS
+#LIBFLAGS = -lmlx -lXext -lX11 minilibx/libmlx.a -lm # for Linux
 
 LIBFT = libft/libft.a
 
