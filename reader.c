@@ -84,6 +84,7 @@ int reader(t_map *array_list, int fd)
     array_list->width = 0;
     if (!get_line(array_list,&map,fd))
         return (0);
-    array_list->points = (t_point *)malloc(array_list->height * array_list->width * sizeof(t_point));
+    array_list->points = malloc(array_list->height * array_list->width * sizeof(t_point));
+    array_list->xpoints = malloc(array_list->height * array_list->width * sizeof(t_point));
     return (fill_struct(array_list, map));
 }

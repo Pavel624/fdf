@@ -18,6 +18,7 @@
 # include "./minilibx/mlx.h"
 # include <stdlib.h>
 # include <fcntl.h>
+#include <stdio.h>
 # define WIDTH 1000
 # define HEIGHT 1000
 # define TEXT_COLOR 0xEAEAEA
@@ -31,6 +32,11 @@
 
 # define KEY_ZOOM_IN 69
 # define KEY_ZOOM_OUT 78
+
+# define KEY_NUM_4 86
+# define KEY_NUM_6 88
+# define KEY_NUM_7 89
+# define KEY_NUM_9 92
 
 # define KEY_R 15
 
@@ -103,7 +109,17 @@ typedef struct s_map
     int max_z;
     int min_z;
     t_point *points;
+    t_point *xpoints;
 }               t_map;
+
+typedef struct s_mouse
+{
+    double x;
+    double y;
+    double x0;
+    double y0;
+    int pressed;
+}               t_mouse;
 
 typedef struct s_fdf
 {
@@ -112,6 +128,7 @@ typedef struct s_fdf
     void *mlx;
     void *window;
     t_image image;
+    t_mouse mouse;
     double x_scale;
     double y_scale;
     double z_scale;
@@ -123,6 +140,7 @@ typedef struct s_fdf
     double z_shift;
     int color_max;
     int color_min;
+    int color_style;
 }               t_fdf;
 
 /*
@@ -135,23 +153,29 @@ int validate_map(t_map *array_list);
 // matrixes.c
 */
 
-t_matrix    *scale(double x_scale, double y_scale, double z_scale);
-t_matrix    *translate(double x_trans, double y_trans, double z_trans);
-t_matrix	*rotate_z(double theta, int key);
-t_matrix	*rotate_y(double theta, int key);
-t_matrix	*rotate_x(double theta, int key);
+t_matrix    scale(double x_scale, double y_scale, double z_scale);
+t_matrix    translate(double x_trans, double y_trans, double z_trans);
+t_matrix	rotate_z(double theta, int key);
+t_matrix	rotate_y(double theta, int key);
+t_matrix	rotate_x(double theta, int key);
 
 void init_elem(t_fdf *elem, char* name);
 
 int key_down(int key, t_fdf *fdf);
 int key_trans(int key, t_fdf *fdf);
+int mouse_trans_pressed(int button, int x, int y, t_fdf *fdf);
+int mouse_trans_moved(int x, int y, t_fdf *fdf);
+int mouse_trans_released(int button, int x, int y, t_fdf *fdf);
+void init_mouse(t_fdf *fdf);
 
 void reset_fdf(t_fdf *elem);
 
+void menu(t_fdf *elem);
+
+int calculate_color(t_fdf *fdf, t_map *map, t_point point);
 void clear_image(t_fdf *fdf, t_image *image);
 void mlx_setup(t_fdf *elem);
 int deal_key(int key, t_fdf *elem);
-void menu(t_fdf *elem);
 void draw_line(t_fdf *elem, t_point point_0, t_point point_1);
 void initialize_image(t_fdf *fdf);
 void render_image(t_fdf *fdf);

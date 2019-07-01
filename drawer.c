@@ -42,9 +42,16 @@ void		img_pixel_put(t_image *img, double x, double y, int color)
 
 double get_percentage_color(double begin, double end, double current)
 {
-    if (end == begin)
+    if (begin == end)
         return (0.0);
     return ((current - begin) / (end - begin));
+}
+
+double get_pixel_color(double begin, double end, double current)
+{
+    if (begin == end)
+        return (begin);
+    return(begin * (1.0 - current) + (end * current));
 }
 
 int		get_line_color(int color1, int color2, double color_grad)
@@ -59,25 +66,40 @@ int		get_line_color(int color1, int color2, double color_grad)
 		return (color1);
 	if (color_grad == 1.0)
 		return (color2);
-	r = (int)get_percentage_color(((color1 >> 16) & 0xFF), ((color2 >> 16) & 0xFF), color_grad);
-	g = (int)get_percentage_color(((color1 >> 8) & 0xFF), ((color2 >> 8) & 0xFF), color_grad);
-	b = (int)get_percentage_color((color1 & 0xFF), (color2 & 0xFF), color_grad);
+	r = (int)get_pixel_color(((color1 >> 16) & 0xFF), ((color2 >> 16) & 0xFF), color_grad);
+	g = (int)get_pixel_color(((color1 >> 8) & 0xFF), ((color2 >> 8) & 0xFF), color_grad);
+	b = (int)get_pixel_color((color1 & 0xFF), (color2 & 0xFF), color_grad);
 	return (r << 16 | g << 8 | b);
+}
+
+int calculate_color(t_fdf *fdf, t_map *map, t_point point)
+{
+    int color;
+    int diff;
+    double diff_pcnt;
+
+    diff = map->max_z - map->min_z;
+    if (diff != 0)
+        diff_pcnt = (point.z - map->min_z) / (double) diff;
+    else
+        diff_pcnt = 0.0;
+    color = get_line_color(fdf->color_min, fdf->color_max, diff_pcnt);
+    return (color);
 }
 
 void draw_line(t_fdf *elem, t_point point0, t_point point1)
 {
     t_line line;
 
-    line = set_line(point0,point1);
+    line = set_line(point0, point1);
     while (1)
     {
         if (line.dx > line.dy)
-            line.color_grad = get_percentage_color(point0.x, point1.x,line.x0);
+            line.color_grad = get_percentage_color(point0.x, point1.x, line.x0);
         else
-            line.color_grad = get_percentage_color(point0.y, point1.y,line.y0);
-        line.color = get_line_color(point0.color, point1.color,line.color_grad);
-        img_pixel_put(&elem->image, line.x0, line.y0, 0xffff);
+            line.color_grad = get_percentage_color(point0.y, point1.y, line.y0);
+        line.color = get_line_color(point0.color, point1.color, line.color_grad);
+        img_pixel_put(&elem->image, line.x0, line.y0, line.color);
         if (line.x0 == line.x1 && line.y0 == line.y1)
             break;
         line.error2 = line.error;

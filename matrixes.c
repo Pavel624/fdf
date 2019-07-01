@@ -12,86 +12,81 @@
 
 #include "fdf.h"
 
-t_matrix *scale(double x_scale, double y_scale, double z_scale)
+t_matrix scale(double x_scale, double y_scale, double z_scale)
 {
-    t_matrix *scale_matrix;
+    t_matrix scale_matrix;
 
-    scale_matrix = (t_matrix *) malloc(sizeof(t_matrix));
-    scale_matrix->column = 4;
-    scale_matrix->row = 4;
-    ft_bzero((void *)scale_matrix,sizeof(scale_matrix));
-    scale_matrix->value[index_matr(0, 0, 4)] = x_scale;
-    scale_matrix->value[index_matr(1, 1, 4)] = y_scale;
-    scale_matrix->value[index_matr(2, 2, 4)] = z_scale;
-    scale_matrix->value[index_matr(3, 3, 4)] = 1;
+    scale_matrix.column = 4;
+    scale_matrix.row = 4;
+    ft_bzero((void *)&scale_matrix,sizeof(scale_matrix));
+    scale_matrix.value[index_matr(0, 0, 4)] = x_scale;
+    scale_matrix.value[index_matr(1, 1, 4)] = y_scale;
+    scale_matrix.value[index_matr(2, 2, 4)] = z_scale;
+    scale_matrix.value[index_matr(3, 3, 4)] = 1;
     return (scale_matrix);
 }
 
-t_matrix *translate(double x_trans, double y_trans, double z_trans)
+t_matrix translate(double x_trans, double y_trans, double z_trans)
 {
-    t_matrix *scale_matrix;
+    t_matrix scale_matrix;
 
-    scale_matrix = (t_matrix *) malloc(sizeof(t_matrix));
-    scale_matrix->column = 4;
-    scale_matrix->row = 4;
-    ft_bzero((void *)scale_matrix,sizeof(scale_matrix));
-    scale_matrix->value[index_matr(0, 0, 4)] = 1;
-    scale_matrix->value[index_matr(1, 1, 4)] = 1;
-    scale_matrix->value[index_matr(2, 2, 4)] = 1;
-    scale_matrix->value[index_matr(3, 3, 4)] = 1;
-    scale_matrix->value[index_matr(0, 3, 4)] = x_trans;
-    scale_matrix->value[index_matr(1, 3, 4)] = y_trans;
-    scale_matrix->value[index_matr(2, 3, 4)] = z_trans;
+    scale_matrix.column = 4;
+    scale_matrix.row = 4;
+    ft_bzero((void *)&scale_matrix,sizeof(scale_matrix));
+    scale_matrix.value[index_matr(0, 0, 4)] = 1;
+    scale_matrix.value[index_matr(1, 1, 4)] = 1;
+    scale_matrix.value[index_matr(2, 2, 4)] = 1;
+    scale_matrix.value[index_matr(3, 3, 4)] = 1;
+    scale_matrix.value[index_matr(0, 3, 4)] = x_trans;
+    scale_matrix.value[index_matr(1, 3, 4)] = y_trans;
+    scale_matrix.value[index_matr(2, 3, 4)] = z_trans;
     return (scale_matrix);
 }
 
-t_matrix	*rotate_z(double theta, int key)
+t_matrix	rotate_z(double theta, int key)
 {
-	t_matrix *trans_matrix;
+	t_matrix trans_matrix;
 
-    trans_matrix = (t_matrix *) malloc(sizeof(t_matrix));
-	trans_matrix->column = 4;
-    trans_matrix->row = 4;
-    ft_bzero((void *)trans_matrix,sizeof(trans_matrix));
-	trans_matrix->value[index_matr(0, 0, 4)] = cos(theta);
-	trans_matrix->value[index_matr(0, 1, 4)] = (key) ? -sin(theta) : sin(theta);
-	trans_matrix->value[index_matr(1, 0, 4)] = (key) ? sin(theta) : -sin(theta);
-	trans_matrix->value[index_matr(1, 1, 4)] = cos(theta);
-	trans_matrix->value[index_matr(2, 2, 4)] = 1;
-	trans_matrix->value[index_matr(3, 3, 4)] = 1;
+	trans_matrix.column = 4;
+    trans_matrix.row = 4;
+    ft_bzero((void *)&trans_matrix,sizeof(trans_matrix));
+	trans_matrix.value[index_matr(0, 0, 4)] = cos(theta);
+	trans_matrix.value[index_matr(0, 1, 4)] = (key) ? -sin(theta) : sin(theta);
+	trans_matrix.value[index_matr(1, 0, 4)] = (key) ? sin(theta) : -sin(theta);
+	trans_matrix.value[index_matr(1, 1, 4)] = cos(theta);
+	trans_matrix.value[index_matr(2, 2, 4)] = 1;
+	trans_matrix.value[index_matr(3, 3, 4)] = 1;
 	return (trans_matrix);
 }
 
-t_matrix	*rotate_y(double theta, int key)
+t_matrix	rotate_y(double theta, int key)
 {
-	t_matrix *trans_matrix;
+	t_matrix trans_matrix;
 
-    trans_matrix = (t_matrix *) malloc(sizeof(t_matrix));
-	trans_matrix->column = 4;
-    trans_matrix->row = 4;
-    ft_bzero((void *)trans_matrix,sizeof(trans_matrix));
-	trans_matrix->value[index_matr(0, 0, 4)] = cos(theta);
-	trans_matrix->value[index_matr(0, 2, 4)] = (key) ? sin(theta) : -sin(theta);
-	trans_matrix->value[index_matr(1, 1, 4)] = 1;
-	trans_matrix->value[index_matr(2, 0, 4)] = (key) ? -sin(theta) : sin(theta);
-	trans_matrix->value[index_matr(2, 2, 4)] = cos(theta);
-	trans_matrix->value[index_matr(3, 3, 4)] = 1;
+	trans_matrix.column = 4;
+    trans_matrix.row = 4;
+    ft_bzero((void *)&trans_matrix,sizeof(trans_matrix));
+	trans_matrix.value[index_matr(0, 0, 4)] = cos(theta);
+	trans_matrix.value[index_matr(0, 2, 4)] = (key) ? sin(theta) : -sin(theta);
+	trans_matrix.value[index_matr(1, 1, 4)] = 1;
+	trans_matrix.value[index_matr(2, 0, 4)] = (key) ? -sin(theta) : sin(theta);
+	trans_matrix.value[index_matr(2, 2, 4)] = cos(theta);
+	trans_matrix.value[index_matr(3, 3, 4)] = 1;
 	return (trans_matrix);
 }
 
-t_matrix	*rotate_x(double theta, int key)
+t_matrix	rotate_x(double theta, int key)
 {
-	t_matrix *trans_matrix;
+	t_matrix trans_matrix;
 
-    trans_matrix = (t_matrix *) malloc(sizeof(t_matrix));
-	trans_matrix->column = 4;
-    trans_matrix->row = 4;
-    ft_bzero((void *)trans_matrix,sizeof(trans_matrix));
-	trans_matrix->value[index_matr(0, 0, 4)] = 1;
-	trans_matrix->value[index_matr(1, 1, 4)] = cos(theta);
-	trans_matrix->value[index_matr(1, 2, 4)] = (key) ? sin(theta) : -sin(theta);
-	trans_matrix->value[index_matr(2, 1, 4)] = (key) ? sin(theta) : -sin(theta);
-	trans_matrix->value[index_matr(2, 2, 4)] = cos(theta);
-	trans_matrix->value[index_matr(3, 3, 4)] = 1;
+	trans_matrix.column = 4;
+    trans_matrix.row = 4;
+    ft_bzero((void *)&trans_matrix,sizeof(trans_matrix));
+	trans_matrix.value[index_matr(0, 0, 4)] = 1;
+	trans_matrix.value[index_matr(1, 1, 4)] = cos(theta);
+	trans_matrix.value[index_matr(1, 2, 4)] = (key) ? -sin(theta) : sin(theta);
+	trans_matrix.value[index_matr(2, 1, 4)] = (key) ? sin(theta) : -sin(theta);
+	trans_matrix.value[index_matr(2, 2, 4)] = cos(theta);
+	trans_matrix.value[index_matr(3, 3, 4)] = 1;
 	return (trans_matrix);
 }
