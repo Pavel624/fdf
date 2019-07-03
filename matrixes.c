@@ -16,8 +16,6 @@ t_matrix scale(double x_scale, double y_scale, double z_scale)
 {
     t_matrix scale_matrix;
 
-    scale_matrix.column = 4;
-    scale_matrix.row = 4;
     ft_bzero((void *)&scale_matrix,sizeof(scale_matrix));
     scale_matrix.value[index_matr(0, 0, 4)] = x_scale;
     scale_matrix.value[index_matr(1, 1, 4)] = y_scale;
@@ -30,8 +28,6 @@ t_matrix translate(double x_trans, double y_trans, double z_trans)
 {
     t_matrix scale_matrix;
 
-    scale_matrix.column = 4;
-    scale_matrix.row = 4;
     ft_bzero((void *)&scale_matrix,sizeof(scale_matrix));
     scale_matrix.value[index_matr(0, 0, 4)] = 1;
     scale_matrix.value[index_matr(1, 1, 4)] = 1;
@@ -47,8 +43,6 @@ t_matrix	rotate_z(double theta, int key)
 {
 	t_matrix trans_matrix;
 
-	trans_matrix.column = 4;
-    trans_matrix.row = 4;
     ft_bzero((void *)&trans_matrix,sizeof(trans_matrix));
 	trans_matrix.value[index_matr(0, 0, 4)] = cos(theta);
 	trans_matrix.value[index_matr(0, 1, 4)] = (key) ? -sin(theta) : sin(theta);
@@ -63,8 +57,6 @@ t_matrix	rotate_y(double theta, int key)
 {
 	t_matrix trans_matrix;
 
-	trans_matrix.column = 4;
-    trans_matrix.row = 4;
     ft_bzero((void *)&trans_matrix,sizeof(trans_matrix));
 	trans_matrix.value[index_matr(0, 0, 4)] = cos(theta);
 	trans_matrix.value[index_matr(0, 2, 4)] = (key) ? sin(theta) : -sin(theta);
@@ -79,8 +71,6 @@ t_matrix	rotate_x(double theta, int key)
 {
 	t_matrix trans_matrix;
 
-	trans_matrix.column = 4;
-    trans_matrix.row = 4;
     ft_bzero((void *)&trans_matrix,sizeof(trans_matrix));
 	trans_matrix.value[index_matr(0, 0, 4)] = 1;
 	trans_matrix.value[index_matr(1, 1, 4)] = cos(theta);

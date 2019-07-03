@@ -27,64 +27,11 @@ static t_line set_line(t_point point_0, t_point point_1)
     line.y1 = (int) point_1.y;
     line.dx = ABS(line.x1 - line.x0);
     line.dy = ABS(line.y1 - line.y0);
-    line.qx = line.x0 < line.x1 ? 1 : -1;
-    line.qy = line.y0 < line.y1 ? 1 : -1;
-    line.error = ((line.dx > line.dy) ? line.dx : -line.dy) / 2;
+    line.sx = line.x0 < line.x1 ? 1 : -1;
+    line.sy = line.y0 < line.y1 ? 1 : -1;
+    line.error = (line.dx > line.dy) ? line.dx : -line.dy;
     line.color_grad = 0.0;
     return (line);
-}
-
-void		img_pixel_put(t_image *img, double x, double y, int color)
-{
-	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
-		*(int *)(img->ptr + (int)(index_matr(y, x, WIDTH) * img->bpp)) = color;
-}
-
-double get_percentage_color(double begin, double end, double current)
-{
-    if (begin == end)
-        return (0.0);
-    return ((current - begin) / (end - begin));
-}
-
-double get_pixel_color(double begin, double end, double current)
-{
-    if (begin == end)
-        return (begin);
-    return(begin * (1.0 - current) + (end * current));
-}
-
-int		get_line_color(int color1, int color2, double color_grad)
-{
-	int	r;
-	int	g;
-	int	b;
-
-	if (color1 == color2)
-		return (color1);
-	if (color_grad == 0.0)
-		return (color1);
-	if (color_grad == 1.0)
-		return (color2);
-	r = (int)get_pixel_color(((color1 >> 16) & 0xFF), ((color2 >> 16) & 0xFF), color_grad);
-	g = (int)get_pixel_color(((color1 >> 8) & 0xFF), ((color2 >> 8) & 0xFF), color_grad);
-	b = (int)get_pixel_color((color1 & 0xFF), (color2 & 0xFF), color_grad);
-	return (r << 16 | g << 8 | b);
-}
-
-int calculate_color(t_fdf *fdf, t_map *map, t_point point)
-{
-    int color;
-    int diff;
-    double diff_pcnt;
-
-    diff = map->max_z - map->min_z;
-    if (diff != 0)
-        diff_pcnt = (point.z - map->min_z) / (double) diff;
-    else
-        diff_pcnt = 0.0;
-    color = get_line_color(fdf->color_min, fdf->color_max, diff_pcnt);
-    return (color);
 }
 
 void draw_line(t_fdf *elem, t_point point0, t_point point1)
@@ -102,16 +49,16 @@ void draw_line(t_fdf *elem, t_point point0, t_point point1)
         img_pixel_put(&elem->image, line.x0, line.y0, line.color);
         if (line.x0 == line.x1 && line.y0 == line.y1)
             break;
-        line.error2 = line.error;
+        line.error2 = line.error / 2;
         if (line.error2 > -line.dx)
         {
 			line.error -= line.dy;
-			line.x0 += line.qx;
+			line.x0 += line.sx;
 		}
 		if (line.error2 < line.dy)
 		{
 			line.error += line.dx;
-			line.y0 += line.qy;
+			line.y0 += line.sy;
 		}
     }
 }

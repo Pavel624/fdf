@@ -12,6 +12,39 @@
 
 #include "fdf.h"
 
+int key_down(int key, t_fdf *fdf)
+{
+    if (key == KEY_ESC)
+    {
+        free_fdf(fdf);
+        exit(EXIT_SUCCESS);
+    }
+    if (key == KEY_R)
+        reset_fdf(fdf);
+	if (key == KEY_NUMPAD_1)
+	{
+		fdf->color_max = 0xFF0000;
+		fdf->color_min = 0x0000FF;
+	}
+	if (key == KEY_NUMPAD_2)
+	{
+		fdf->color_max = 0xFFFFFF;
+		fdf->color_min = 0xFFFFFF;
+	}
+	if (key == KEY_NUMPAD_3)
+	{
+		fdf->color_max = 0xFF00F0;
+		fdf->color_min = 0x00FF00;
+	}
+	if (key == KEY_NUMPAD_4)
+	{
+		fdf->color_max = 0xF0FF0F;
+		fdf->color_min = 0x0F00F0;
+	}
+    render_image(fdf);
+    return (0);
+}
+
 void init_mouse(t_fdf *fdf)
 {
     t_mouse *mouse;
@@ -35,12 +68,12 @@ int key_trans(int key, t_fdf *fdf)
         fdf->x_shift += 5;
     if (key == KEY_LEFT)
         fdf->x_shift -= 5;
-    if (key == 83)
+    if (key == KEY_Z)
 	{
 		fdf->z_rotation += (2 * M_PI / 360);
 		fdf->z_rotation = fmod(fdf->z_rotation, 360);
 	}
-	if (key == 85)
+	if (key == KEY_C)
 	{
 		fdf->z_rotation -= (2 * M_PI / 360);
 		fdf->z_rotation = fmod(fdf->z_rotation, 360);
@@ -89,8 +122,8 @@ int mouse_trans_moved(int x, int y, t_fdf *fdf)
         mouse->y = y;
         if (mouse->pressed)
         {
-            fdf->x_rotation += (mouse->y0 - y) / 150;
-            fdf->y_rotation -= (mouse->x0 - x) / 150;
+            fdf->x_rotation -= (mouse->y0 - y) / 150;
+            fdf->y_rotation += (mouse->x0 - x) / 150;
         }
         if (mouse->pressed)
             render_image(fdf);

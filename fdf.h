@@ -18,10 +18,9 @@
 # include "./minilibx/mlx.h"
 # include <stdlib.h>
 # include <fcntl.h>
-#include <stdio.h>
-# define WIDTH 1000
-# define HEIGHT 1000
-# define TEXT_COLOR 0xEAEAEA
+# define WIDTH 1080
+# define HEIGHT 720
+# define TEXT_COLOR 0xFFFFFF
 
 # define KEY_ESC 53
 
@@ -33,12 +32,14 @@
 # define KEY_ZOOM_IN 69
 # define KEY_ZOOM_OUT 78
 
-# define KEY_NUM_4 86
-# define KEY_NUM_6 88
-# define KEY_NUM_7 89
-# define KEY_NUM_9 92
+# define KEY_NUMPAD_1 83
+# define KEY_NUMPAD_2 84
+# define KEY_NUMPAD_3 85
+# define KEY_NUMPAD_4 86
 
 # define KEY_R 15
+# define KEY_Z 6
+# define KEY_C 8
 
 typedef struct s_point
 {
@@ -57,43 +58,20 @@ typedef struct s_line
     int y1;
     int dx;
     int dy;
-    int qx;
-    int qy;
+    int sx;
+    int sy;
     int error;
     int error2;
-    double color_grad; 
+    double color_grad;
     int color;
 }               t_line;
 
-typedef struct s_plot
-{
-    int x1;
-    int x2;
-    int y1;
-    int y2;
-    int z1;
-    int z2;
-    struct s_plot *next; 
-}              t_plot;
-
-typedef struct s_max_min
-{
-    int x_max;
-    int x_min;
-    int y_max;
-    int y_min;
-    int z_max;
-    int z_min;
-}               t_max_min;
-
 typedef struct s_matrix
 {
-    int column;
-    int row;
     double value[16];
 }               t_matrix;
 
-typedef struct s_image 
+typedef struct s_image
 {
     void *image;
     char *ptr;
@@ -119,7 +97,7 @@ typedef struct s_mouse
     double x0;
     double y0;
     int pressed;
-}               t_mouse;
+}				t_mouse;
 
 typedef struct s_fdf
 {
@@ -144,23 +122,46 @@ typedef struct s_fdf
 }               t_fdf;
 
 /*
+// main.c
+*/
+
+void		ft_error(char *msg, int i);
+
+/*
 // reader.c
 */
-int reader(t_map *array_list, int fd);
-int validate_map(t_map *array_list);
+
+int			reader(t_map *array_list, int fd);
 
 /*
 // matrixes.c
 */
 
-t_matrix    scale(double x_scale, double y_scale, double z_scale);
-t_matrix    translate(double x_trans, double y_trans, double z_trans);
+t_matrix	scale(double x_scale, double y_scale, double z_scale);
+t_matrix	translate(double x_trans, double y_trans, double z_trans);
 t_matrix	rotate_z(double theta, int key);
 t_matrix	rotate_y(double theta, int key);
 t_matrix	rotate_x(double theta, int key);
 
+/*
+// colors.c
+*/
+
+double		get_percentage_color(double start, double end, double current);
+int			get_pixel_color(double start, double end, double current);
+int			get_line_color(int color1, int color2, double color_grad);
+int			calculate_color(t_fdf *fdf, t_map *map, t_point point);
+
+/*
+// image.c
+*/
+
+void		img_pixel_put(t_image *img, double x, double y, int color);
+void		initialize_image(t_fdf *fdf);
+
 void init_elem(t_fdf *elem, char* name);
 
+void free_fdf(t_fdf *fdf);
 int key_down(int key, t_fdf *fdf);
 int key_trans(int key, t_fdf *fdf);
 int mouse_trans_pressed(int button, int x, int y, t_fdf *fdf);
@@ -172,14 +173,11 @@ void reset_fdf(t_fdf *elem);
 
 void menu(t_fdf *elem);
 
-int calculate_color(t_fdf *fdf, t_map *map, t_point point);
 void clear_image(t_fdf *fdf, t_image *image);
 void mlx_setup(t_fdf *elem);
 int deal_key(int key, t_fdf *elem);
 void draw_line(t_fdf *elem, t_point point_0, t_point point_1);
-void initialize_image(t_fdf *fdf);
 void render_image(t_fdf *fdf);
-void		img_pixel_put(t_image *img, double x, double y, int color);
 int index_matr(int row, int column, int map_width);
 
 #endif

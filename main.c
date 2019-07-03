@@ -11,33 +11,39 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdio.h>
 
-static void ft_error(char *msg, int i)
+static	int	close_app(void *param)
 {
-    ft_putstr(ft_strjoin(msg,"\n"));
-    exit(i);
+	(void)param;
+	exit(0);
 }
 
-int main(int argc, char *argv[])
+void		ft_error(char *msg, int i)
 {
-    t_fdf elem;
-    int fd;
+	ft_putstr(ft_strjoin(msg, "\n"));
+	exit(i);
+}
 
-    if (argc != 2)
-        ft_error("usage: ./fdf *input_file*", 0);
-    if ((fd = open(argv[1],O_RDONLY)) < 0)
-        ft_error("File cannot be opened", 0);
-    if (!reader(&elem.map,fd))
-        ft_error("Something is wrong with file inputs", 0);
-    close(fd);
-    init_elem(&elem, argv[1]);
-    render_image(&elem);
-    mlx_key_hook(elem.window, key_down, &elem);
-    mlx_hook(elem.window, 2, 0, key_trans, &elem);
-    mlx_hook(elem.window, 4, 0, mouse_trans_pressed, &elem);
-    mlx_hook(elem.window, 5, 0, mouse_trans_released, &elem);
-    mlx_hook(elem.window, 6, 0, mouse_trans_moved, &elem);
-    mlx_loop((&elem)->mlx);
-    return (0);
+int			main(int argc, char *argv[])
+{
+	t_fdf	elem;
+	int		fd;
+
+	if (argc != 2)
+		ft_error("usage: ./fdf *input_file*", 0);
+	if ((fd = open(argv[1], O_RDONLY)) < 0)
+		ft_error("File cannot be opened", 0);
+	if (!reader(&elem.map, fd))
+		ft_error("Something is wrong with file inputs", 0);
+	close(fd);
+	init_elem(&elem, argv[1]);
+	render_image(&elem);
+	mlx_key_hook(elem.window, key_down, &elem);
+	mlx_hook(elem.window, 2, 0, key_trans, &elem);
+	mlx_hook(elem.window, 4, 0, mouse_trans_pressed, &elem);
+	mlx_hook(elem.window, 5, 0, mouse_trans_released, &elem);
+	mlx_hook(elem.window, 6, 0, mouse_trans_moved, &elem);
+	mlx_hook(elem.window, 17, 0, close_app, &elem);
+	mlx_loop((&elem)->mlx);
+	return (0);
 }

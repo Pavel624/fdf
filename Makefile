@@ -1,6 +1,6 @@
 NAME = fdf
 
-SRC  = main.c reader.c additional.c drawer.c matrixes.c initialize.c hooks.c
+SRC  = main.c reader.c additional.c drawer.c matrixes.c image.c hooks.c colors.c
 
 OBJ  = $(SRC:.c=.o)
 

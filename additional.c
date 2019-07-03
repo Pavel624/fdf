@@ -12,14 +12,13 @@
 
 #include "fdf.h"
 #include <math.h>
-#include <stdio.h>
 
 void menu(t_fdf *elem)
-{   
+{
     int pos;
 
     pos = 0;
-        
+
     mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Zoom: +/-");
     mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Move: Arrow keys");
     mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Rotate:");
@@ -29,24 +28,11 @@ void menu(t_fdf *elem)
     mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Exit: ESC");
 }
 
-static void free_fdf(t_fdf *fdf)
+void free_fdf(t_fdf *fdf)
 {
     //free(&(fdf->map).xpoints);
     //free(fdf->map);
     mlx_destroy_image(fdf->mlx, fdf->image.image);
-}
-
-int key_down(int key, t_fdf *fdf)
-{
-    if (key == KEY_ESC)
-    {
-        free_fdf(fdf);
-        exit(EXIT_SUCCESS);
-    }
-    if (key == KEY_R)
-        reset_fdf(fdf);
-    render_image(fdf);
-    return (0);
 }
 
 void reset_fdf(t_fdf *elem)
@@ -119,7 +105,7 @@ t_point transform_point(t_fdf *fdf, t_map *map, int row, int column)
     double map_middle_x;
     double map_middle_h;
 
-    map_middle_x = (double)((map->width - 1) / 2);    
+    map_middle_x = (double)((map->width - 1) / 2);
     map_middle_h = (double)((map->height - 1) / 2);
     map_middle_z = (double)(map->max_z - map->min_z) / 2;
     current_point = map->points[index_matr(row, column, map->width)];
