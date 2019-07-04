@@ -6,8 +6,8 @@ OBJ  = $(SRC:.c=.o)
 
 FLAGS = -Wall -Werror -Wextra -g
 
-LIBFLAGS = -framework OpenGL -framework AppKit -lm -lmlx #-L minilibx -l mlx -lm # macOS
-#LIBFLAGS = -lmlx -lXext -lX11 minilibx/libmlx.a -lm # for Linux
+#LIBFLAGS = -framework OpenGL -framework AppKit -lm -lmlx #-L minilibx -l mlx -lm #for macOS
+LIBFLAGS = -lmlx -lXext -lX11 minilibx/libmlx.a -lm # for Linux
 
 LIBFT = libft/libft.a
 
@@ -15,25 +15,34 @@ INC_LIB = libft
 
 HEAD = libft/libft.h
 
+RED			= \033[1;31m
+GREEN		= \033[1;32m
+YELLOW		= \033[1;33m
+BLUE		= \033[1;34m
+VIOLET		= \033[1;35m
+
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
-	gcc $(FLAGS) $(OBJ) $(LIBFT) $(LIBFLAGS) -I$(INC_LIB) -o $(NAME)
+	@gcc $(FLAGS) $(OBJ) $(LIBFT) $(LIBFLAGS) -I$(INC_LIB) -o $(NAME)
+	@echo "$(GREEN)Project is successfully compiled"
 	
 $(LIBFT):
-	make -C libft/
+	@echo "$(GREEN)Compiling library files$(VIOLET)"
+	@make -C libft/
 
 %.o : %.c
-	gcc $(FLAGS) -c $< -o $@ -I$(INC_LIB)
+	@gcc $(FLAGS) -c $< -o $@ -I$(INC_LIB)
 
 clean:
-	make -C libft clean
-	rm -f *.o
+	@echo "$(RED)Suspending library files$(VIOLET)"
+	@make -C libft clean
+	@rm -rf *.o
 
 fclean: clean
-	make -C libft fclean
-	rm -f $(OBJ)
-	rm -f $(NAME)
+	@echo "$(RED)Suspending project files$(VIOLET)"
+	@make -C libft fclean
+	@rm -rf $(OBJ)
+	@rm -rf $(NAME)
 
 re: fclean all
-	make -C libft re
