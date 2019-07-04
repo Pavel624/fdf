@@ -11,21 +11,27 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <math.h>
+
+int index_matr(int row, int column, int map_width)
+{
+    return (row * map_width + column);
+}
 
 void menu(t_fdf *elem)
 {
     int pos;
 
     pos = 0;
-
-    mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Zoom: +/-");
-    mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Move: Arrow keys");
-    mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Rotate:");
-    mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "X-Axis");
-    mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Y-Axis");
-    mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Z-Axis");
-    mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Exit: ESC");
+    mlx_string_put(elem->mlx,elem->window, pos+=20, HEIGHT - 30, TEXT_COLOR, "Zoom: Mouse wheel");
+    mlx_string_put(elem->mlx,elem->window, pos+=220, HEIGHT - 30, TEXT_COLOR, "Move: Arrow keys");
+    mlx_string_put(elem->mlx,elem->window, pos+=200, HEIGHT - 30, TEXT_COLOR, "Rotate:");
+    mlx_string_put(elem->mlx,elem->window, pos+=130, HEIGHT - 60, TEXT_COLOR, "X-Axis");
+    mlx_string_put(elem->mlx,elem->window, pos+=130, HEIGHT - 30, TEXT_COLOR, "[Q] [E]");
+    mlx_string_put(elem->mlx,elem->window, pos+=130, HEIGHT - 60, TEXT_COLOR, "Y-Axis");
+    mlx_string_put(elem->mlx,elem->window, pos, HEIGHT - 30, TEXT_COLOR, "[A] [D]");
+    mlx_string_put(elem->mlx,elem->window, pos+=130, HEIGHT - 60, TEXT_COLOR, "Z-Axis");
+    mlx_string_put(elem->mlx,elem->window, pos+=130, HEIGHT - 60, TEXT_COLOR, "[Z] [C]");
+    mlx_string_put(elem->mlx,elem->window, pos+=130, HEIGHT - 30, TEXT_COLOR, "Exit: ESC");
 }
 
 void free_fdf(t_fdf *fdf)
@@ -43,9 +49,9 @@ void reset_fdf(t_fdf *elem)
     elem->x_shift = 0;
     elem->y_shift = 0;
     elem->z_shift = 0;
-    elem->x_scale = 30;
-    elem->y_scale = 30;
-    elem->z_scale = 30;
+    elem->x_scale = elem->scale;
+    elem->y_scale = elem->scale;
+    elem->z_scale = elem->scale;
 }
 
 
@@ -87,11 +93,17 @@ t_point multiplicate_matrixes(t_matrix matrix, t_point point)
 
 void init_elem(t_fdf *elem, char* name)
 {
+    double x_scale;
+    double y_scale;
+
     elem->name = name;
     elem->mlx = mlx_init();
     elem->window = mlx_new_window(elem->mlx, WIDTH, HEIGHT, "FDF");
     initialize_image(elem);
     init_mouse(elem);
+    x_scale = WIDTH / elem->map.width;
+    y_scale = HEIGHT / elem->map.height;
+    elem->scale = x_scale > y_scale ? y_scale : x_scale;
     reset_fdf(elem);
     elem->color_max = 0xFF0000;
     elem->color_min = 0x0000FF;

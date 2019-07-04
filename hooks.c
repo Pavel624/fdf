@@ -14,13 +14,13 @@
 
 int key_down(int key, t_fdf *fdf)
 {
-    if (key == KEY_ESC)
-    {
-        free_fdf(fdf);
-        exit(EXIT_SUCCESS);
-    }
-    if (key == KEY_R)
-        reset_fdf(fdf);
+	if (key == KEY_ESC)
+	{
+		free_fdf(fdf);
+		exit(EXIT_SUCCESS);
+	}
+	if (key == KEY_R)
+		reset_fdf(fdf);
 	if (key == KEY_NUMPAD_1)
 	{
 		fdf->color_max = 0xFF0000;
@@ -68,6 +68,14 @@ int key_trans(int key, t_fdf *fdf)
         fdf->x_shift += 5;
     if (key == KEY_LEFT)
         fdf->x_shift -= 5;
+    if (key == KEY_Q)
+        fdf->x_rotation += 0.08;
+    if (key == KEY_E)
+        fdf->x_rotation -= 0.08;
+    if (key == KEY_A)
+        fdf->y_rotation += 0.08;
+    if (key == KEY_D)
+        fdf->y_rotation -= 0.08;
     if (key == KEY_Z)
 	{
 		fdf->z_rotation += (2 * M_PI / 360);
@@ -78,8 +86,8 @@ int key_trans(int key, t_fdf *fdf)
 		fdf->z_rotation -= (2 * M_PI / 360);
 		fdf->z_rotation = fmod(fdf->z_rotation, 360);
 	}
-    render_image(fdf);
-    return (0);
+	render_image(fdf);
+	return (0);
 }
 
 int mouse_trans_pressed(int button, int x, int y, t_fdf *fdf)
@@ -92,7 +100,7 @@ int mouse_trans_pressed(int button, int x, int y, t_fdf *fdf)
             (&fdf->mouse)->y = y;
             (&fdf->mouse)->pressed = 1;
         }
-        if (button == 4 && fdf->x_scale > 0 && fdf->y_scale > 0 && fdf->z_scale > 0)
+        if (button == 4 && fdf->x_scale - 3 >= 0 && fdf->y_scale - 3 >= 0 && fdf->z_scale - 3 >= 0)
         {
             fdf->x_scale -= 3;
             fdf->y_scale -= 3;
@@ -122,8 +130,8 @@ int mouse_trans_moved(int x, int y, t_fdf *fdf)
         mouse->y = y;
         if (mouse->pressed)
         {
-            fdf->x_rotation -= (mouse->y0 - y) / 150;
-            fdf->y_rotation += (mouse->x0 - x) / 150;
+            fdf->x_rotation -= (mouse->y0 - y) / 180;
+            fdf->y_rotation += (mouse->x0 - x) / 180;
         }
         if (mouse->pressed)
             render_image(fdf);

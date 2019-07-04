@@ -18,8 +18,8 @@
 # include "./minilibx/mlx.h"
 # include <stdlib.h>
 # include <fcntl.h>
-# define WIDTH 1080
-# define HEIGHT 720
+# define WIDTH 1440
+# define HEIGHT 900
 # define TEXT_COLOR 0xFFFFFF
 
 # define KEY_ESC 53
@@ -38,6 +38,10 @@
 # define KEY_NUMPAD_4 86
 
 # define KEY_R 15
+# define KEY_Q 12
+# define KEY_E 14
+# define KEY_A 0
+# define KEY_D 2
 # define KEY_Z 6
 # define KEY_C 8
 
@@ -86,6 +90,7 @@ typedef struct s_map
     int height;
     int max_z;
     int min_z;
+    int buf[WIDTH * HEIGHT];
     t_point *points;
     t_point *xpoints;
 }               t_map;
@@ -116,6 +121,7 @@ typedef struct s_fdf
     double x_shift;
     double y_shift;
     double z_shift;
+    double scale;
     int color_max;
     int color_min;
     int color_style;
@@ -172,6 +178,8 @@ void init_mouse(t_fdf *fdf);
 void reset_fdf(t_fdf *elem);
 
 void menu(t_fdf *elem);
+
+void init_buf(t_fdf *fdf);
 
 void clear_image(t_fdf *fdf, t_image *image);
 void mlx_setup(t_fdf *elem);

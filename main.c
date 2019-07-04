@@ -20,7 +20,7 @@ static	int	close_app(void *param)
 
 void		ft_error(char *msg, int i)
 {
-	ft_putstr(ft_strjoin(msg, "\n"));
+	ft_putstr(msg);
 	exit(i);
 }
 
@@ -30,11 +30,11 @@ int			main(int argc, char *argv[])
 	int		fd;
 
 	if (argc != 2)
-		ft_error("usage: ./fdf *input_file*", 0);
+		ft_error("usage: ./fdf *input_file*\n", 0);
 	if ((fd = open(argv[1], O_RDONLY)) < 0)
-		ft_error("File cannot be opened", 0);
+		ft_error("File cannot be opened\n", 0);
 	if (!reader(&elem.map, fd))
-		ft_error("Something is wrong with file inputs", 0);
+		ft_error("Something is wrong with file inputs\n", 0);
 	close(fd);
 	init_elem(&elem, argv[1]);
 	render_image(&elem);
