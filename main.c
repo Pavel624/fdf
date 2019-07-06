@@ -39,11 +39,11 @@ int			main(int argc, char *argv[])
 	init_elem(&elem, argv[1]);
 	render_image(&elem);
 	mlx_key_hook(elem.window, key_down, &elem);
-	mlx_hook(elem.window, 2, 0, key_trans, &elem);
-	mlx_hook(elem.window, 4, 0, mouse_trans_pressed, &elem);
-	mlx_hook(elem.window, 5, 0, mouse_trans_released, &elem);
-	mlx_hook(elem.window, 6, 0, mouse_trans_moved, &elem);
-	mlx_hook(elem.window, 17, 0, close_app, &elem);
+	mlx_hook(elem.window, 2, (1L << 0), key_trans, &elem);
+	mlx_hook(elem.window, 4, (1L << 2), mouse_trans_pressed, &elem);
+	mlx_hook(elem.window, 5, (1L << 3), mouse_trans_released, &elem);
+	mlx_hook(elem.window, 6, (1L << 13), mouse_trans_moved, &elem);
+	mlx_hook(elem.window, 17, 0L, close_app, &elem);
 	mlx_loop((&elem)->mlx);
 	return (0);
 }

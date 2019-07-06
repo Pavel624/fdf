@@ -1,0 +1,6 @@
+fdf
+.DS
+*/.DS*
+*.o
+*.dSYM
+.vscode

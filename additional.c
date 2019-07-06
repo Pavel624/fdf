@@ -91,6 +91,15 @@ t_point multiplicate_matrixes(t_matrix matrix, t_point point)
     return (new_point);
 }
 
+void init_coord(t_fdf *fdf)
+{
+    int i;
+
+    i = (int) WIDTH * HEIGHT;
+    while (--i >= 0)
+        fdf->coord[i] = -2147483648;
+}
+
 void init_elem(t_fdf *elem, char* name)
 {
     double x_scale;
@@ -101,6 +110,7 @@ void init_elem(t_fdf *elem, char* name)
     elem->window = mlx_new_window(elem->mlx, WIDTH, HEIGHT, "FDF");
     initialize_image(elem);
     init_mouse(elem);
+    init_coord(elem);
     x_scale = WIDTH / elem->map.width;
     y_scale = HEIGHT / elem->map.height;
     elem->scale = x_scale > y_scale ? y_scale : x_scale;
@@ -166,6 +176,7 @@ void render_image(t_fdf *fdf)
     int map_w;
 
     clear_img(&fdf->image);
+    init_coord(fdf);
     put_pixels(fdf);
     row = fdf->map.height;
     map_w = fdf->map.width;

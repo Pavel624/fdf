@@ -6,8 +6,13 @@ OBJ  = $(SRC:.c=.o)
 
 FLAGS = -Wall -Werror -Wextra -g
 
-LIBFLAGS = -framework OpenGL -framework AppKit -lm -lmlx #-L minilibx -l mlx -lm #for mac
-#LIBFLAGS = -lmlx -lXext -lX11 minilibx/libmlx.a -lm #for Linux
+OSVER := $(shell uname -s)
+
+ifeq ($(OSVER), Linux)
+	LIBFLAGS = -lmlx -lXext -lX11 minilibx/libmlx.a -lm
+else
+	LIBFLAGS = -framework OpenGL -framework AppKit -lm -lmlx
+endif
 
 LIBFT = libft/libft.a
 

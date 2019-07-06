@@ -90,7 +90,6 @@ typedef struct s_map
     int height;
     int max_z;
     int min_z;
-    int buf[WIDTH * HEIGHT];
     t_point *points;
     t_point *xpoints;
 }               t_map;
@@ -112,6 +111,7 @@ typedef struct s_fdf
     void *window;
     t_image image;
     t_mouse mouse;
+    int coord[WIDTH * HEIGHT];
     double x_scale;
     double y_scale;
     double z_scale;
