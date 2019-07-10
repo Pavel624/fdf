@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nbethany <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/12 19:30:59 by nbethany          #+#    #+#             */
-/*   Updated: 2019/04/12 19:33:15 by nbethany         ###   ########.fr       */
-/*                                                                            */
+/**/
+/*:::  ::::::::   */
+/*   fdf.h  :+:  :+::+:   */
+/*+:+ +:+ +:+ */
+/*   By: nbethany <marvin@42.fr>+#+  +:+   +#+*/
+/*+#+#+#+#+#+   +#+   */
+/*   Created: 2019/04/12 19:30:59 by nbethany  #+##+# */
+/*   Updated: 2019/04/12 19:33:15 by nbethany ###   ########.fr   */
+/**/
 /* ************************************************************************** */
 
 #ifndef FDF_H
@@ -18,9 +18,12 @@
 # include "./minilibx/mlx.h"
 # include <stdlib.h>
 # include <fcntl.h>
-# define WIDTH 1440
+# define WIDTH 1600
 # define HEIGHT 900
+# define MENU_WIDTH 200
 # define TEXT_COLOR 0xFFFFFF
+# define BACKGROUND_COLOR 0x000000
+# define MENU_BACKGROUND_COLOR 0x202020
 
 # define KEY_ESC 53
 
@@ -44,88 +47,94 @@
 # define KEY_D 2
 # define KEY_Z 6
 # define KEY_C 8
+# define KEY_P 35
+# define KEY_I 34
+
+# define ISO 0
+# define PAR 1
 
 typedef struct s_point
 {
-    double x;
-    double y;
-    double z;
-    double w;
-    int color;
-}              t_point;
+double x;
+double y;
+double z;
+double w;
+int color;
+}  t_point;
 
 typedef struct s_line
 {
-    int x0;
-    int y0;
-    int x1;
-    int y1;
-    int dx;
-    int dy;
-    int sx;
-    int sy;
-    int error;
-    int error2;
-    double color_grad;
-    int color;
-}               t_line;
+int x0;
+int y0;
+int x1;
+int y1;
+int dx;
+int dy;
+int sx;
+int sy;
+int error;
+int error2;
+double color_grad;
+int color;
+}   t_line;
 
 typedef struct s_matrix
 {
-    double value[16];
-}               t_matrix;
+double value[16];
+}		t_matrix;
 
 typedef struct s_image
 {
-    void *image;
-    char *ptr;
-    int bpp;
-    int line_s;
-    int endian;
-}               t_image;
+void *image;
+char *ptr;
+int bpp;
+int line_s;
+int endian;
+}		t_image;
 
 typedef struct s_map
 {
-    int width;
-    int height;
-    int max_z;
-    int min_z;
-    t_point *points;
-    t_point *xpoints;
-}               t_map;
+int width;
+int height;
+int max_z;
+int min_z;
+t_point *points;
+t_point *xpoints;
+}   t_map;
 
 typedef struct s_mouse
 {
-    double x;
-    double y;
-    double x0;
-    double y0;
-    int pressed;
+double x;
+double y;
+double x0;
+double y0;
+int pressed;
 }				t_mouse;
 
 typedef struct s_fdf
 {
-    char *name;
-    t_map map;
-    void *mlx;
-    void *window;
-    t_image image;
-    t_mouse mouse;
-    int coord[WIDTH * HEIGHT];
-    double x_scale;
-    double y_scale;
-    double z_scale;
-    double x_rotation;
-    double y_rotation;
-    double z_rotation;
-    double x_shift;
-    double y_shift;
-    double z_shift;
-    double scale;
-    int color_max;
-    int color_min;
-    int color_style;
-}               t_fdf;
+char *name;
+t_map map;
+void *mlx;
+void *window;
+t_image image;
+t_mouse mouse;
+int coord[WIDTH * HEIGHT];
+double x_scale;
+double y_scale;
+double z_scale;
+double x_rotation;
+double y_rotation;
+double z_rotation;
+double x_shift;
+double y_shift;
+double z_shift;
+double scale;
+char camera;
+int color_max;
+int color_min;
+int color_style;
+}   t_fdf;
 
 /*
 // main.c
@@ -180,7 +189,7 @@ void reset_fdf(t_fdf *elem);
 void menu(t_fdf *elem);
 
 void init_buf(t_fdf *fdf);
-
+void clear_background(t_image *img);
 void clear_image(t_fdf *fdf, t_image *image);
 void mlx_setup(t_fdf *elem);
 int deal_key(int key, t_fdf *elem);
