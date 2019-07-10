@@ -24,13 +24,15 @@ void menu(t_fdf *elem)
 	pos = 0;
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Zoom: Mouse wheel");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Move: Arrow keys");
-	mlx_string_put(elem->mlx,elem->window, 65, pos+=20, TEXT_COLOR, "Rotate:");
+	mlx_string_put(elem->mlx,elem->window, 65, pos+=30, TEXT_COLOR, "Rotate:");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "X-Axis");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "[Q] [E]");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Y-Axis");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "[A] [D]");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Z-Axis");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "[Z] [C]");
+	mlx_string_put(elem->mlx,elem->window, 15, pos+=30, TEXT_COLOR, "Change colors:");
+	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "NUMPAD [1 - 4]");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=30, TEXT_COLOR, "Exit: ESC");
 }
 
