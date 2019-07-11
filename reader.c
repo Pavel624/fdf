@@ -37,7 +37,6 @@ static	t_point	get_point(t_map *map, char *split, int row, int column)
 	if (!validate_number(number))
 		ft_error("Something is wrong with file inputs", 0);
 	point.z = (double)ft_atoi(split);
-	point.w = 1;
 	point.color = 0xFFFFFF;
 	if (point.z > map->max_z)
 		map->max_z = point.z;
@@ -100,7 +99,7 @@ int				reader(t_map *fdf_map, int fd)
 	map = NULL;
 	fdf_map->height = 0;
 	fdf_map->width = 0;
-	if (!get_line(fdf_map, &map, fd))
+	if (!get_line(fdf_map, &map, fd) || !map)
 		return (0);
 	fdf_map->points = malloc(fdf_map->height *
 								fdf_map->width * sizeof(t_point));

@@ -58,7 +58,6 @@ typedef struct s_point
 double x;
 double y;
 double z;
-double w;
 int color;
 }  t_point;
 
@@ -113,7 +112,6 @@ int pressed;
 
 typedef struct s_fdf
 {
-char *name;
 t_map map;
 void *mlx;
 void *window;

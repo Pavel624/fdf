@@ -24,25 +24,25 @@ static t_line set_line(t_point point_0, t_point point_1)
     line.dy = ABS(line.y1 - line.y0);
     line.sx = line.x0 < line.x1 ? 1 : -1;
     line.sy = line.y0 < line.y1 ? 1 : -1;
-    line.error = (line.dx > line.dy) ? line.dx : -line.dy;
+    line.error = line.dx - line.dy;
     line.color_grad = 0.0;
     return (line);
 }
 
 int is_drawn(t_fdf *fdf, t_line line, t_point p0, t_point p1)
 {
-    int coord_z;
+	int coord_z;
 
-    if (line.y0 >= 0 && line.y0 < HEIGHT && line.x0 >= 0 && line.x0 < WIDTH)
-    {
-        coord_z = get_pixel_color(p0.z, p1.z, line.color_grad);
-        if (coord_z > fdf->coord[index_matr(line.y0,line.x0,WIDTH)])
-            {
-                fdf->coord[index_matr(line.y0,line.x0,WIDTH)] = coord_z;
-                return(0);
-            }
-    }
-    return (1);
+	if (line.y0 >= 0 && line.y0 < HEIGHT && line.x0 >= 0 && line.x0 < WIDTH)
+	{
+		coord_z = get_pixel_color(p0.z, p1.z, line.color_grad);
+		if (coord_z > fdf->coord[index_matr(line.y0,line.x0,WIDTH)])
+			{
+				fdf->coord[index_matr(line.y0,line.x0,WIDTH)] = coord_z;
+				return(0);
+			}
+	}
+	return (1);
 }
 
 void draw_line(t_fdf *elem, t_point point0, t_point point1)
@@ -60,14 +60,14 @@ void draw_line(t_fdf *elem, t_point point0, t_point point1)
             if (!is_drawn(elem, line, point0, point1))
         img_pixel_put(&elem->image, line.x0, line.y0, line.color);
         if (line.x0 == line.x1 && line.y0 == line.y1)
-            break;
-        line.error2 = line.error / 2;
-        if (line.error2 > -line.dx)
+           break;
+        line.error2 = line.error * 2;
+        if (line.error2 > -line.dy)
         {
 			line.error -= line.dy;
 			line.x0 += line.sx;
 		}
-		if (line.error2 < line.dy)
+		if (line.error2 < line.dx)
 		{
 			line.error += line.dx;
 			line.y0 += line.sy;

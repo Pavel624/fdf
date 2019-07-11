@@ -26,11 +26,16 @@ void menu(t_fdf *elem)
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Move: Arrow keys");
 	mlx_string_put(elem->mlx,elem->window, 65, pos+=30, TEXT_COLOR, "Rotate:");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "X-Axis");
-	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "[Q] [E]");
+	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "[Q] [E] MOUSE1");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Y-Axis");
-	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "[A] [D]");
+	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "[A] [D] MOUSE1");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Z-Axis");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "[Z] [C]");
+	mlx_string_put(elem->mlx,elem->window, 15, pos+=30, TEXT_COLOR, "Change projection:");
+	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Parallel");
+	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "[P]");
+	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "Isometric");
+	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "[I]");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=30, TEXT_COLOR, "Change colors:");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=20, TEXT_COLOR, "NUMPAD [1 - 4]");
 	mlx_string_put(elem->mlx,elem->window, 15, pos+=30, TEXT_COLOR, "Exit: ESC");
@@ -56,43 +61,6 @@ void reset_fdf(t_fdf *elem)
 	elem->z_scale = elem->scale;
 }
 
-
-void init_point(t_point *point)
-{
-	point->x = 0;
-	point->y = 0;
-	point->z = 0;
-	point->w = 0;
-	point->color = 0;
-}
-
-t_point multiplicate_matrixes(t_matrix matrix, t_point point)
-{
-	t_point new_point;
-	int i;
-	double *coord[4];
-
-	init_point(&new_point);
-	coord[0] = &new_point.x;
-	coord[1] = &new_point.y;
-	coord[2] = &new_point.z;
-	coord[3] = &new_point.w;
-	i = 0;
-	while (i <= 2)
-	{
-		*coord[i] += matrix.value[index_matr(i, 0, 4)] * point.x;
-		*coord[i] += matrix.value[index_matr(i, 1, 4)] * point.y;
-		*coord[i] += matrix.value[index_matr(i, 2, 4)] * point.z;
-		*coord[i] += matrix.value[index_matr(i, 3, 4)] * point.w;
-		*coord[i + 1] += matrix.value[index_matr(i + 1, 0, 4)] * point.x;
-		*coord[i + 1] += matrix.value[index_matr(i + 1, 1, 4)] * point.y;
-		*coord[i + 1] += matrix.value[index_matr(i + 1, 2, 4)] * point.z;
-		*coord[i + 1] += matrix.value[index_matr(i + 1, 3, 4)] * point.w;
-		i += 2;
-	}
-	return (new_point);
-}
-
 void init_coord(t_fdf *fdf)
 {
 	int i;
@@ -107,7 +75,7 @@ void init_elem(t_fdf *elem, char* name)
 	double x_scale;
 	double y_scale;
 
-	elem->name = name;
+	(void) name;
 	elem->mlx = mlx_init();
 	elem->window = mlx_new_window(elem->mlx, WIDTH, HEIGHT, "FDF");
 	initialize_image(elem);
@@ -115,11 +83,79 @@ void init_elem(t_fdf *elem, char* name)
 	init_coord(elem);
 	x_scale = (WIDTH - MENU_WIDTH) / elem->map.width / 2;
 	y_scale = HEIGHT / elem->map.height / 2;
-	elem->scale = x_scale > y_scale ? y_scale - y_scale / 4 : x_scale - x_scale / 4;
-	elem->camera = PAR;
+	elem->scale = x_scale > y_scale ? y_scale : x_scale;
+	elem->camera = ISO;
 	reset_fdf(elem);
 	elem->color_max = 0xFFA500;
 	elem->color_min = 0xE75480;
+}
+
+static void iso(double *x, double *y, double z)
+{
+    int previous_x;
+    int previous_y;
+
+    previous_x = *x;
+    previous_y = *y;
+    *x = (previous_x - previous_y) * cos(0.523599);
+    *y = -z + (previous_x + previous_y) * sin(0.523599);
+}
+
+static void	rotate_x_around(double *y, double *z, double alpha)
+{
+	int previous_y;
+
+	previous_y = *y;
+	*y = previous_y * cos(alpha) + *z * sin(alpha);
+	*z = -previous_y * sin(alpha) + *z * cos(alpha);
+}
+
+static void	rotate_y_around(double *x, double *z, double beta)
+{
+	int previous_x;
+
+	previous_x = *x;
+	*x = previous_x * cos(beta) + *z * sin(beta);
+	*z = -previous_x * sin(beta) + *z * cos(beta);
+}
+
+static void	rotate_z_around(double *x, double *y, double gamma)
+{
+	int previous_x;
+	int previous_y;
+
+	previous_x = *x;
+	previous_y = *y;
+	*x = previous_x * cos(gamma) - previous_y * sin(gamma);
+	*y = previous_x * sin(gamma) + previous_y * cos(gamma);
+}
+
+static void scale_point(t_point *point, t_fdf *fdf)
+{
+	int previous_x;
+	int previous_y;
+	int previous_z;
+
+	previous_x = point->x;
+	previous_y = point->y;
+	previous_z = point->z;
+	point->x = previous_x * fdf->x_scale;
+	point->y = previous_y * fdf->y_scale;
+	point->z = previous_z * fdf->z_scale;
+}
+
+static void translate_point(t_point *point, double x_shift, double y_shift, double z_shift)
+{
+	int previous_x;
+	int previous_y;
+	int previous_z;
+
+	previous_x = point->x;
+	previous_y = point->y;
+	previous_z = point->z;
+	point->x = previous_x + x_shift;
+	point->y = previous_y + y_shift;
+	point->z = previous_z + z_shift;
 }
 
 t_point transform_point(t_fdf *fdf, t_map *map, int row, int column)
@@ -133,14 +169,17 @@ t_point transform_point(t_fdf *fdf, t_map *map, int row, int column)
 	map_middle_x = (double)((map->width - 1) / 2);
 	map_middle_h = (double)((map->height - 1) / 2);
 	map_middle_z = (double)(map->max_z - map->min_z) / 2;
-	current_point = map->points[index_matr(row, column, map->width)];
-	new_point = multiplicate_matrixes(translate(-map_middle_x, -map_middle_h, -map_middle_z), current_point);
-	new_point = multiplicate_matrixes(scale(fdf->x_scale, fdf->y_scale, fdf->z_scale), new_point);
-	new_point = multiplicate_matrixes(rotate_x(fdf->x_rotation, 0), new_point);
-	new_point = multiplicate_matrixes(rotate_y(fdf->y_rotation, 0), new_point);
-	new_point = multiplicate_matrixes(rotate_z(fdf->z_rotation, 0), new_point);
-	new_point = multiplicate_matrixes(translate((WIDTH / 2), (HEIGHT / 2), 0), new_point);
-	new_point = multiplicate_matrixes(translate(fdf->x_shift, fdf->y_shift, fdf->z_shift), new_point);
+	new_point = map->points[index_matr(row, column, map->width)];
+	current_point = new_point;
+	translate_point(&new_point, -map_middle_x, -map_middle_h, -map_middle_z);
+	scale_point(&new_point, fdf);
+	rotate_x_around(&new_point.y, &new_point.z,fdf->x_rotation);
+	rotate_y_around(&new_point.x, &new_point.z,fdf->y_rotation);
+	rotate_z_around(&new_point.x, &new_point.y,fdf->z_rotation);
+	if (fdf->camera == ISO)
+		iso(&new_point.x, &new_point.y, new_point.z);
+	translate_point(&new_point,(double) (WIDTH + MENU_WIDTH) / 2, (double) HEIGHT / 2, 0);
+	translate_point(&new_point, fdf->x_shift, fdf->y_shift, fdf->z_shift);
 	new_point.color = calculate_color(fdf, map, current_point);
 	return (new_point);
 }
@@ -166,7 +205,7 @@ void put_pixels(t_fdf *fdf)
 	}
 }
 
-void        clear_background(t_image *img)
+void		clear_background(t_image *img)
 {
 	int i;
 	int *image;
@@ -174,11 +213,8 @@ void        clear_background(t_image *img)
 	ft_bzero(img->ptr, WIDTH * HEIGHT * img->bpp);
 	image = (int *)(img->ptr);
 	i = 0;
-	while (i < HEIGHT * WIDTH)
-	{
+	while (i++ < HEIGHT * WIDTH)
 		image[i] = (i % WIDTH < MENU_WIDTH) ? MENU_BACKGROUND_COLOR : BACKGROUND_COLOR;
-		i++;
-	}
 }
 
 void render_image(t_fdf *fdf)
