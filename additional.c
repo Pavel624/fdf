@@ -92,8 +92,8 @@ void init_elem(t_fdf *elem, char* name)
 
 static void iso(double *x, double *y, double z)
 {
-    int previous_x;
-    int previous_y;
+    double previous_x;
+    double previous_y;
 
     previous_x = *x;
     previous_y = *y;
@@ -103,7 +103,7 @@ static void iso(double *x, double *y, double z)
 
 static void	rotate_x_around(double *y, double *z, double alpha)
 {
-	int previous_y;
+	double previous_y;
 
 	previous_y = *y;
 	*y = previous_y * cos(alpha) + *z * sin(alpha);
@@ -112,7 +112,7 @@ static void	rotate_x_around(double *y, double *z, double alpha)
 
 static void	rotate_y_around(double *x, double *z, double beta)
 {
-	int previous_x;
+	double previous_x;
 
 	previous_x = *x;
 	*x = previous_x * cos(beta) + *z * sin(beta);
@@ -121,8 +121,8 @@ static void	rotate_y_around(double *x, double *z, double beta)
 
 static void	rotate_z_around(double *x, double *y, double gamma)
 {
-	int previous_x;
-	int previous_y;
+	double previous_x;
+	double previous_y;
 
 	previous_x = *x;
 	previous_y = *y;
@@ -132,9 +132,9 @@ static void	rotate_z_around(double *x, double *y, double gamma)
 
 static void scale_point(t_point *point, t_fdf *fdf)
 {
-	int previous_x;
-	int previous_y;
-	int previous_z;
+	double previous_x;
+	double previous_y;
+	double previous_z;
 
 	previous_x = point->x;
 	previous_y = point->y;
@@ -146,9 +146,9 @@ static void scale_point(t_point *point, t_fdf *fdf)
 
 static void translate_point(t_point *point, double x_shift, double y_shift, double z_shift)
 {
-	int previous_x;
-	int previous_y;
-	int previous_z;
+	double previous_x;
+	double previous_y;
+	double previous_z;
 
 	previous_x = point->x;
 	previous_y = point->y;
