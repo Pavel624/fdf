@@ -105,7 +105,5 @@ int				reader(t_map *fdf_map, int fd)
 								fdf_map->width * sizeof(t_point));
 	fdf_map->xpoints = malloc(fdf_map->height *
 								fdf_map->width * sizeof(t_point));
-	fdf_map->color = malloc(fdf_map->height *
-								fdf_map->width * sizeof(int));
 	return (fill_struct(fdf_map, map));
 }

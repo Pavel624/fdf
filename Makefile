@@ -4,7 +4,7 @@ SRC  = main.c reader.c additional.c drawer.c matrixes.c image.c hooks.c colors.c
 
 OBJ  = $(SRC:.c=.o)
 
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra -g -O3
 
 OSVER := $(shell uname -s)
 

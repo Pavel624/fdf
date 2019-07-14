@@ -56,9 +56,6 @@ void reset_fdf(t_fdf *elem)
 	elem->x_shift = 0;
 	elem->y_shift = 0;
 	elem->z_shift = 0;
-	elem->x_scale = elem->scale;
-	elem->y_scale = elem->scale;
-	elem->z_scale = elem->scale;
 }
 
 void init_coord(t_fdf *fdf)
@@ -90,10 +87,10 @@ void init_elem(t_fdf *elem, char* name)
 	elem->color_min = 0xE75480;
 }
 
-static void iso(double *x, double *y, double z)
+static void iso(int *x, int *y, int z)
 {
-    double previous_x;
-    double previous_y;
+    int previous_x;
+    int previous_y;
 
     previous_x = *x;
     previous_y = *y;
@@ -101,28 +98,28 @@ static void iso(double *x, double *y, double z)
     *y = -z + (previous_x + previous_y) * sin(0.523599);
 }
 
-static void	rotate_x_around(double *y, double *z, double alpha)
+static void	rotate_x_around(int *y, int *z, double alpha)
 {
-	double previous_y;
+	int previous_y;
 
 	previous_y = *y;
 	*y = previous_y * cos(alpha) + *z * sin(alpha);
 	*z = -previous_y * sin(alpha) + *z * cos(alpha);
 }
 
-static void	rotate_y_around(double *x, double *z, double beta)
+static void	rotate_y_around(int *x, int *z, double beta)
 {
-	double previous_x;
+	int previous_x;
 
 	previous_x = *x;
 	*x = previous_x * cos(beta) + *z * sin(beta);
 	*z = -previous_x * sin(beta) + *z * cos(beta);
 }
 
-static void	rotate_z_around(double *x, double *y, double gamma)
+static void	rotate_z_around(int *x, int *y, double gamma)
 {
-	double previous_x;
-	double previous_y;
+	int previous_x;
+	int previous_y;
 
 	previous_x = *x;
 	previous_y = *y;
@@ -132,23 +129,23 @@ static void	rotate_z_around(double *x, double *y, double gamma)
 
 static void scale_point(t_point *point, t_fdf *fdf)
 {
-	double previous_x;
-	double previous_y;
-	double previous_z;
+	int previous_x;
+	int previous_y;
+	int previous_z;
 
 	previous_x = point->x;
 	previous_y = point->y;
 	previous_z = point->z;
-	point->x = previous_x * fdf->x_scale;
-	point->y = previous_y * fdf->y_scale;
-	point->z = previous_z * fdf->z_scale;
+	point->x = previous_x * fdf->scale;
+	point->y = previous_y * fdf->scale;
+	point->z = previous_z * fdf->scale;
 }
 
-static void translate_point(t_point *point, double x_shift, double y_shift, double z_shift)
+static void translate_point(t_point *point, int x_shift, int y_shift, int z_shift)
 {
-	double previous_x;
-	double previous_y;
-	double previous_z;
+	int previous_x;
+	int previous_y;
+	int previous_z;
 
 	previous_x = point->x;
 	previous_y = point->y;
@@ -166,9 +163,9 @@ t_point transform_point(t_fdf *fdf, t_map *map, int row, int column)
 	double map_middle_x;
 	double map_middle_h;
 
-	map_middle_x = (double)((map->width - 1) / 2);
-	map_middle_h = (double)((map->height - 1) / 2);
-	map_middle_z = (double)(map->max_z - map->min_z) / 2;
+	map_middle_x = (map->width - 1) / 2;
+	map_middle_h = (map->height - 1) / 2;
+	map_middle_z = (map->max_z - map->min_z) / 2;
 	new_point = map->points[index_matr(row, column, map->width)];
 	current_point = new_point;
 	translate_point(&new_point, -map_middle_x, -map_middle_h, -map_middle_z);
@@ -178,7 +175,7 @@ t_point transform_point(t_fdf *fdf, t_map *map, int row, int column)
 	rotate_z_around(&new_point.x, &new_point.y,fdf->z_rotation);
 	if (fdf->camera == ISO)
 		iso(&new_point.x, &new_point.y, new_point.z);
-	translate_point(&new_point,(double) (WIDTH + MENU_WIDTH) / 2, (double) HEIGHT / 2, 0);
+	translate_point(&new_point,(WIDTH + MENU_WIDTH) / 2, HEIGHT / 2, 0);
 	translate_point(&new_point, fdf->x_shift, fdf->y_shift, fdf->z_shift);
 	new_point.color = calculate_color(fdf, map, current_point);
 	return (new_point);

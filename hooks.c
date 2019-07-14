@@ -21,8 +21,8 @@ int key_down(int key, t_fdf *fdf)
 	}
 	else if (key == KEY_P)
 	{
-	fdf->camera = PAR;
-	reset_fdf(fdf);
+		fdf->camera = PAR;
+		reset_fdf(fdf);
 	}
 	else if (key == KEY_I)
 	{
@@ -49,21 +49,20 @@ int key_down(int key, t_fdf *fdf)
 		fdf->color_max = 0xF0FF0F;
 		fdf->color_min = 0x0F00F0;
 	}
-render_image(fdf);
-return (0);
+	render_image(fdf);
+	return (0);
 }
 
 void init_mouse(t_fdf *fdf)
 {
-t_mouse *mouse;
+	t_mouse *mouse;
 
-mouse = &fdf->mouse;
-mouse->pressed = 0;
-mouse->x0 = 0;
-mouse->y0 = 0;
-mouse->x = 0;
-mouse->y = 0;
-
+	mouse = &fdf->mouse;
+	mouse->pressed = 0;
+	mouse->x0 = 0;
+	mouse->y0 = 0;
+	mouse->x = 0;
+	mouse->y = 0;
 }
 
 int key_trans(int key, t_fdf *fdf)
@@ -85,17 +84,9 @@ int key_trans(int key, t_fdf *fdf)
 	else if  (key == KEY_D)
 		fdf->y_rotation -= 0.05;
 	else if  (key == KEY_Z)
-	{
-		//fdf->z_rotation += (2 * M_PI / 360);
-		//fdf->z_rotation = fmod(fdf->z_rotation, 360);
 		fdf->z_rotation += 0.05;
-	}
 	else if  (key == KEY_C)
-	{
-		//fdf->z_rotation -= (2 * M_PI / 360);
-		//fdf->z_rotation = fmod(fdf->z_rotation, 360);
 		fdf->z_rotation -= 0.05;
-	}
 	render_image(fdf);
 	return (0);
 }
@@ -110,18 +101,10 @@ int mouse_trans_pressed(int button, int x, int y, t_fdf *fdf)
 		(&fdf->mouse)->y = y;
 		(&fdf->mouse)->pressed = 1;
 	}
-	else if  (button == 4 && fdf->x_scale - 1 >= 0 && fdf->y_scale - 1 >= 0 && fdf->z_scale - 1 >= 0)
-	{
-		fdf->x_scale -= 1;
-		fdf->y_scale -= 1;
-		fdf->z_scale -= 1;
-	}
+	else if (button == 4 && fdf->scale - 2 >= 0)
+		fdf->scale -= 2;
 	else if  (button == 5)
-	{
-		fdf->x_scale += 1;
-		fdf->y_scale += 1;
-		fdf->z_scale += 1;
-	}
+		fdf->scale += 2;
 	render_image(fdf);
 	}
 	return (0);

@@ -55,9 +55,9 @@
 
 typedef struct s_point
 {
-double x;
-double y;
-double z;
+int x;
+int y;
+int z;
 int color;
 }  t_point;
 
@@ -118,16 +118,13 @@ void *window;
 t_image image;
 t_mouse mouse;
 int coord[WIDTH * HEIGHT];
-double x_scale;
-double y_scale;
-double z_scale;
 double x_rotation;
 double y_rotation;
 double z_rotation;
-double x_shift;
-double y_shift;
-double z_shift;
-double scale;
+int x_shift;
+int y_shift;
+int z_shift;
+int scale;
 char camera;
 int color_max;
 int color_min;
@@ -149,12 +146,6 @@ int			reader(t_map *array_list, int fd);
 /*
 // matrixes.c
 */
-
-t_matrix	scale(double x_scale, double y_scale, double z_scale);
-t_matrix	translate(double x_trans, double y_trans, double z_trans);
-t_matrix	rotate_z(double theta, int key);
-t_matrix	rotate_y(double theta, int key);
-t_matrix	rotate_x(double theta, int key);
 
 /*
 // colors.c
