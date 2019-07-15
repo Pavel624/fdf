@@ -4,3 +4,6 @@ fdf
 *.o
 *.dSYM
 .vscode
+.idea
+CMakeLists.txt
+cmake-build-debug
