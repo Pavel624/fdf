@@ -62,7 +62,7 @@ static int validate_number(char *number, t_point *point)
         }
 		i++;
 	}
-    point->color = 0xFFFFFF;
+    point->color = -1;
 	return (1);
 }
 
@@ -162,11 +162,11 @@ int				reader(t_map *fdf_map, int fd)
 	    return (0);
 	fdf_map->xpoints = malloc(fdf_map->height *
 								fdf_map->width * sizeof(t_point));
-    if (!fdf_map->xpoints)
-    {
-       free(fdf_map->points);
-       return (0);
-    }
+	if (!fdf_map->xpoints)
+	{
+		free(fdf_map->points);
+		return (0);
+	}
 	fill_struct(fdf_map, map);
 	lstdel(&map);
 	return (1);

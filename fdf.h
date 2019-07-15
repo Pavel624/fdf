@@ -163,7 +163,7 @@ int			calculate_color(t_fdf *fdf, t_map *map, t_point point);
 void		img_pixel_put(t_image *img, double x, double y, int color);
 void		initialize_image(t_fdf *fdf);
 
-void init_elem(t_fdf *elem, char* name);
+void init_elem(t_fdf *elem);
 
 void free_fdf(t_fdf *fdf);
 int key_down(int key, t_fdf *fdf);

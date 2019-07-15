@@ -71,14 +71,14 @@ void init_coord(t_fdf *fdf)
     }
 }
 
-void init_elem(t_fdf *elem, char* name)
+void init_elem(t_fdf *elem)
 {
-	double x_scale;
-	double y_scale;
-	int    *image;
-
-    int    i = WIDTH * HEIGHT;
-	(void) name;
+	double	x_scale;
+	double	y_scale;
+	int		*image;
+	int		i;
+	
+	i = WIDTH * HEIGHT;
 	elem->mlx = mlx_init();
 	elem->window = mlx_new_window(elem->mlx, WIDTH, HEIGHT, "FDF");
 	initialize_image(elem);
@@ -143,30 +143,16 @@ static void	rotate_z_around(int *x, int *y, double gamma)
 
 static void scale_point(t_point *point, t_fdf *fdf)
 {
-	int previous_x;
-	int previous_y;
-	int previous_z;
-
-	previous_x = point->x;
-	previous_y = point->y;
-	previous_z = point->z;
-	point->x = previous_x * fdf->scale;
-	point->y = previous_y * fdf->scale;
-	point->z = previous_z * fdf->scale;
+	point->x *= fdf->scale;
+	point->y *= fdf->scale;
+	point->z *= fdf->scale;
 }
 
 static void translate_point(t_point *point, int x_shift, int y_shift, int z_shift)
 {
-	int previous_x;
-	int previous_y;
-	int previous_z;
-
-	previous_x = point->x;
-	previous_y = point->y;
-	previous_z = point->z;
-	point->x = previous_x + x_shift;
-	point->y = previous_y + y_shift;
-	point->z = previous_z + z_shift;
+	point->x += x_shift;
+	point->y += y_shift;
+	point->z += z_shift;
 }
 
 t_point transform_point(t_fdf *fdf, t_map *map, int row, int column)
@@ -179,7 +165,7 @@ t_point transform_point(t_fdf *fdf, t_map *map, int row, int column)
 
 	map_middle_x = (map->width - 1) / 2;
 	map_middle_h = (map->height - 1) / 2;
-	map_middle_z = (map->max_z - map->min_z) / 2;
+	map_middle_z = (map->max_z + map->min_z) / 2;
 	new_point = map->points[index_matr(row, column, map->width)];
 	current_point = new_point;
 	translate_point(&new_point, -map_middle_x, -map_middle_h, -map_middle_z);
@@ -191,7 +177,8 @@ t_point transform_point(t_fdf *fdf, t_map *map, int row, int column)
 		iso(&new_point.x, &new_point.y, new_point.z);
 	translate_point(&new_point,(WIDTH + MENU_WIDTH) / 2, HEIGHT / 2, 0);
 	translate_point(&new_point, fdf->x_shift, fdf->y_shift, fdf->z_shift);
-	new_point.color = calculate_color(fdf, map, current_point);
+	if (current_point.color < 0)
+		new_point.color = calculate_color(fdf, map, current_point);
 	return (new_point);
 }
 

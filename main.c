@@ -36,7 +36,7 @@ int			main(int argc, char *argv[])
 	if (!reader(&elem.map, fd))
 		ft_error("Something is wrong with file inputs\n", 0);
 	close(fd);
-	init_elem(&elem, argv[1]);
+	init_elem(&elem);
 	render_image(&elem);
 	mlx_key_hook(elem.window, key_down, &elem);
 	mlx_hook(elem.window, 2, (1L << 0), key_trans, &elem);
@@ -46,6 +46,6 @@ int			main(int argc, char *argv[])
 	mlx_hook(elem.window, 17, 0L, close_app, &elem);
 	mlx_loop((&elem)->mlx);
 	free(elem.map.points);
-    free(elem.map.xpoints);
+	free(elem.map.xpoints);
 	exit(0);
 }
