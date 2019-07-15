@@ -12,17 +12,57 @@
 
 #include "fdf.h"
 
-static int validate_number(char *number)
+static int hex_atoi(char *str)
+{
+    int len;
+    size_t res;
+    int rank;
+
+    if (!(str[0] == ',' && str[1] == '0' && (str[2] == 'x' || str[2] == 'X')))
+        return (-1);
+    str += 3;
+    len = ft_strlen(str);
+    if (len > 6)
+        return (-1);
+    res = 0;
+    rank = 0;
+    while (--len > -1)
+    {
+        if (str[len] >= '0' && str[len] <= '9')
+            res += (str[len] - '0') *  pow(16, rank++);
+        else if (str[len] >= 'A' && str[len] <= 'F')
+            res += (str[len] - 55) *  pow(16, rank++);
+        else
+            return (-1);
+    }
+    return (res);
+}
+
+static int validate_number(char *number, t_point *point)
 {
 	size_t len;
+	size_t i;
 
-	len = (*number == '-' || *number == '+');
-	while (len < ft_strlen(number))
+
+	i = (*number == '-' || *number == '+');
+	len = ft_strlen(number);
+	while (i < len)
 	{
-		if (!ft_isdigit(number[len]))
-			return (0);
-		len++;
+		if (!ft_isdigit(number[i]))
+        {
+		    if (number[i] == ',')
+            {
+		        if ((i = hex_atoi(number + i)) != -1)
+		        {
+                    point->color = i;
+                    return (1);
+                }
+            }
+            ft_error("Something is wrong with file inputs\n", 0);
+        }
+		i++;
 	}
+    point->color = 0xFFFFFF;
 	return (1);
 }
 
@@ -34,10 +74,9 @@ static	t_point	get_point(t_map *map, char *split, int row, int column)
 	number = split;
 	point.x = (double)column;
 	point.y = (double)row;
-	if (!validate_number(number))
-		ft_error("Something is wrong with file inputs", 0);
+	if (!validate_number(number, &point))
+		ft_error("Something is wrong with file inputs\n", 0);
 	point.z = (double)ft_atoi(split);
-	point.color = 0xFFFFFF;
 	if (point.z > map->max_z)
 		map->max_z = point.z;
 	if (point.z < map->min_z)
@@ -45,7 +84,7 @@ static	t_point	get_point(t_map *map, char *split, int row, int column)
 	return (point);
 }
 
-static	int		fill_struct(t_map *map, t_list *data)
+static	void fill_struct(t_map *map, t_list *data)
 {
 	t_list	*current_elem;
 	int		column;
@@ -69,18 +108,18 @@ static	int		fill_struct(t_map *map, t_list *data)
 		row--;
 		current_elem = current_elem->next;
 	}
-	return (1);
 }
 
 static	int		get_line(t_map *map, t_list **data, int fd)
 {
 	t_list	*line_data;
-	int		bytes;
 	char	*line;
 
 	line_data = NULL;
-	while ((bytes = get_next_line(fd, &line) > 0) && *line)
+	while ((get_next_line(fd, &line) > 0))
 	{
+	    if (!*line)
+	        return (0);
 		if (map->width == 0)
 			map->width = (int)ft_count_words(line, ' ');
 		else if (map->width != (int)ft_count_words(line, ' '))
@@ -88,8 +127,24 @@ static	int		get_line(t_map *map, t_list **data, int fd)
 		line_data = ft_lstnew(line, ft_strlen(line) + 1);
 		ft_lstadd(data, line_data);
 		map->height++;
+		free(line);
 	}
 	return (1);
+}
+
+void lstdel(t_list **lst)
+{
+    t_list *curr;
+    t_list *tmp;
+
+    curr = *lst;
+    while (curr)
+    {
+        free(curr->content);
+        tmp = curr;
+        curr = curr->next;
+        free(tmp);
+    }
 }
 
 int				reader(t_map *fdf_map, int fd)
@@ -103,7 +158,16 @@ int				reader(t_map *fdf_map, int fd)
 		return (0);
 	fdf_map->points = malloc(fdf_map->height *
 								fdf_map->width * sizeof(t_point));
+	if (!fdf_map->points)
+	    return (0);
 	fdf_map->xpoints = malloc(fdf_map->height *
 								fdf_map->width * sizeof(t_point));
-	return (fill_struct(fdf_map, map));
+    if (!fdf_map->xpoints)
+    {
+       free(fdf_map->points);
+       return (0);
+    }
+	fill_struct(fdf_map, map);
+	lstdel(&map);
+	return (1);
 }

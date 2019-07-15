@@ -45,5 +45,7 @@ int			main(int argc, char *argv[])
 	mlx_hook(elem.window, 6, (1L << 13), mouse_trans_moved, &elem);
 	mlx_hook(elem.window, 17, 0L, close_app, &elem);
 	mlx_loop((&elem)->mlx);
-	return (0);
+	free(elem.map.points);
+    free(elem.map.xpoints);
+	exit(0);
 }

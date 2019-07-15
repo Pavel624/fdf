@@ -6,7 +6,7 @@
 /*   By: nbethany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 22:17:20 by nbethany          #+#    #+#             */
-/*   Updated: 2019/04/19 20:17:22 by nbethany         ###   ########.fr       */
+/*   Updated: 2019/07/15 21:15:48 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,21 @@ void init_coord(t_fdf *fdf)
 	int i;
 
 	i = (int) WIDTH * HEIGHT;
-	while (--i >= 0)
-		fdf->coord[i] = -2147483648;
+    while (--i > -1)
+    {
+        if (i % WIDTH < MENU_WIDTH)
+            i -= MENU_WIDTH - 1;
+        fdf->coord[i] = -2147483648;
+    }
 }
 
 void init_elem(t_fdf *elem, char* name)
 {
 	double x_scale;
 	double y_scale;
+	int    *image;
 
+    int    i = WIDTH * HEIGHT;
 	(void) name;
 	elem->mlx = mlx_init();
 	elem->window = mlx_new_window(elem->mlx, WIDTH, HEIGHT, "FDF");
@@ -85,6 +91,14 @@ void init_elem(t_fdf *elem, char* name)
 	reset_fdf(elem);
 	elem->color_max = 0xFFA500;
 	elem->color_min = 0xE75480;
+	image = (int *)(elem->image.ptr);
+	while (--i > -1)
+    {
+	    if (i % WIDTH < MENU_WIDTH)
+	        image[i] = MENU_BACKGROUND_COLOR;
+	    else
+	        i -= WIDTH - MENU_WIDTH - 1;
+    }
 }
 
 static void iso(int *x, int *y, int z)
@@ -207,11 +221,14 @@ void		clear_background(t_image *img)
 	int i;
 	int *image;
 
-	ft_bzero(img->ptr, WIDTH * HEIGHT * img->bpp);
 	image = (int *)(img->ptr);
-	i = 0;
-	while (i++ < HEIGHT * WIDTH)
-		image[i] = (i % WIDTH < MENU_WIDTH) ? MENU_BACKGROUND_COLOR : BACKGROUND_COLOR;
+	i = HEIGHT * WIDTH;
+	while (--i > -1)
+	{
+        if (i % WIDTH < MENU_WIDTH)
+            i -= MENU_WIDTH - 1;
+        image[i] = BACKGROUND_COLOR;
+    }
 }
 
 void render_image(t_fdf *fdf)
@@ -239,5 +256,5 @@ void render_image(t_fdf *fdf)
 		}
 	}
 	mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->image.image, 0, 0);
-	menu(fdf);
+    menu(fdf);
 }
