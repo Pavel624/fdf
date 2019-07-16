@@ -31,23 +31,27 @@ int key_down(int key, t_fdf *fdf)
 	}
 	else if (key == KEY_NUMPAD_1)
 	{
-		fdf->color_max = 0xFFA500;
-		fdf->color_min = 0xE75480;
+		fdf->color_max = 0xF5A142;
+        fdf->color_mid = 0xF54275;
+		fdf->color_min = 0x9042F5;
 	}
 	else if (key == KEY_NUMPAD_2)
 	{
 		fdf->color_max = 0xFFFFFF;
+		fdf->color_mid = 0xFFFFFF;
 		fdf->color_min = 0xFFFFFF;
 	}
 	else if (key == KEY_NUMPAD_3)
 	{
-		fdf->color_max = 0xFF00F0;
+		fdf->color_max = 0xFD00D0;
+        fdf->color_mid = 0x3755CC;
 		fdf->color_min = 0x00FF00;
 	}
 	else if (key == KEY_NUMPAD_4)
 	{
-		fdf->color_max = 0xF0FF0F;
-		fdf->color_min = 0x0F00F0;
+		fdf->color_max = 0x8ED943;
+        fdf->color_mid = 0x27E8B1;
+		fdf->color_min = 0x2757E8;
 	}
 	render_image(fdf);
 	return (0);
