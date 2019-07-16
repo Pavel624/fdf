@@ -89,8 +89,9 @@ void init_elem(t_fdf *elem)
 	elem->scale = x_scale > y_scale ? y_scale : x_scale;
 	elem->camera = ISO;
 	reset_fdf(elem);
-	elem->color_max = 0xFFA500;
 	elem->color_min = 0xE75480;
+	elem->color_mid = 0x0493BA;
+	elem->color_max = 0xFFA500;
 	image = (int *)(elem->image.ptr);
 	while (--i > -1)
     {

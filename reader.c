@@ -84,6 +84,23 @@ static	t_point	get_point(t_map *map, char *split, int row, int column)
 	return (point);
 }
 
+static  void    find_mid_z(t_map *map)
+{
+    int i;
+    t_point point;
+
+    i = map->height * map->width;
+    while (--i >= 0)
+    {
+        point = map->points[i];
+        if (abs((int)((map->max_z + map->min_z) / 2) - point.z) < map->min_diff_mid_z)
+        {
+            map->min_diff_mid_z = abs((int)((map->max_z + map->min_z) / 2) - point.z);
+            map->mid_z = point.z;
+        }
+    }
+}
+
 static	void fill_struct(t_map *map, t_list *data)
 {
 	t_list	*current_elem;
@@ -95,6 +112,7 @@ static	void fill_struct(t_map *map, t_list *data)
 	row = map->height - 1;
 	map->max_z = -2147483648;
 	map->min_z = 2147483647;
+	map->min_diff_mid_z = 2147483647;
 	while (row >= 0)
 	{
 		column = map->width - 1;
@@ -108,6 +126,7 @@ static	void fill_struct(t_map *map, t_list *data)
 		row--;
 		current_elem = current_elem->next;
 	}
+	find_mid_z(map);
 }
 
 static	int		get_line(t_map *map, t_list **data, int fd)
@@ -131,6 +150,7 @@ static	int		get_line(t_map *map, t_list **data, int fd)
 	}
 	return (1);
 }
+
 
 void lstdel(t_list **lst)
 {
@@ -168,6 +188,6 @@ int				reader(t_map *fdf_map, int fd)
 		return (0);
 	}
 	fill_struct(fdf_map, map);
-	lstdel(&map);
+    lstdel(&map);
 	return (1);
 }

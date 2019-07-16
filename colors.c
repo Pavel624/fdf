@@ -47,11 +47,34 @@ int calculate_color(t_fdf *fdf, t_map *map, t_point point)
 	int diff;
 	double diff_pcnt;
 
-	diff = map->max_z - map->min_z;
-	if (diff != 0)
-		diff_pcnt = (point.z - map->min_z) / (double) diff;
+	if (map->mid_z == map->max_z || map->mid_z == map->min_z)
+	{
+        diff = map->max_z - map->min_z;
+        if (diff != 0)
+            diff_pcnt = (point.z - map->min_z) / (double) diff;
+        else
+            diff_pcnt = 0.0;
+        color = get_line_color(fdf->color_min, fdf->color_max, diff_pcnt);
+        return (color);
+    }
+	if (abs(point.z - map->min_z) <= abs(point.z - map->mid_z))
+    {
+        diff = map->mid_z - map->min_z;
+        if (diff != 0)
+            diff_pcnt = (point.z - map->min_z) / (double) diff;
+        else
+            diff_pcnt = 0.0;
+        color = get_line_color(fdf->color_min, fdf->color_mid, diff_pcnt);
+        return (color);
+    }
 	else
-		 diff_pcnt = 0.0;
-	color = get_line_color(fdf->color_min, fdf->color_max, diff_pcnt);
-	return (color);
+    {
+        diff = map->max_z - map->mid_z;
+        if (diff != 0)
+            diff_pcnt = (point.z - map->mid_z) / (double) diff;
+        else
+            diff_pcnt = 0.0;
+        color = get_line_color(fdf->color_mid, fdf->color_max, diff_pcnt);
+        return (color);
+    }
 }
