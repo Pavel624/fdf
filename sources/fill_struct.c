@@ -100,6 +100,8 @@ static void			find_mid_z(t_map *map)
 			map->mid_z = point.z;
 		}
 	}
+	if (map->mid_z == map->min_z)
+		map->mid_z = map->max_z;
 }
 
 void				fill_struct(t_map *map, t_list *data)

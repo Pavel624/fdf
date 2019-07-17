@@ -93,7 +93,7 @@ void			init_elem(t_fdf *elem)
 	x_scale = (WIDTH - MENU_WIDTH) / elem->map.width / 2;
 	y_scale = HEIGHT / elem->map.height / 2;
 	elem->scale = x_scale > y_scale ? y_scale : x_scale;
-	elem->camera = ISO;
+	elem->camera = PAR;
 	reset_fdf(elem);
 	elem->color_max = 0xF5A142;
 	elem->color_mid = 0xF54275;
