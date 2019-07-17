@@ -1,6 +1,6 @@
 NAME = fdf
 
-SRC  = ./sources/init.c ./sources/main.c ./sources/reader.c ./sources/additional.c ./sources/drawer.c ./sources/image.c ./sources/hooks.c ./sources/colors.c ./sources/rotate.c ./sources/transform.c
+SRC  = ./sources/keys.c ./sources/fill_struct.c ./sources/init.c ./sources/main.c ./sources/reader.c ./sources/additional.c ./sources/drawer.c ./sources/image.c ./sources/hooks.c ./sources/colors.c ./sources/rotate.c ./sources/transform.c
 
 OBJ  = $(SRC:.c=.o)
 

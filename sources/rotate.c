@@ -6,7 +6,7 @@
 /*   By: wstygg <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 12:19:34 by wstygg            #+#    #+#             */
-/*   Updated: 2019/07/17 12:28:30 by wstygg           ###   ########.fr       */
+/*   Updated: 2019/07/17 14:03:27 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,14 @@ void		rotate_z_around(int *x, int *y, double gamma)
 	previous_y = *y;
 	*x = previous_x * cos(gamma) - previous_y * sin(gamma);
 	*y = previous_x * sin(gamma) + previous_y * cos(gamma);
+}
+
+void		reset_fdf(t_fdf *elem)
+{
+	elem->x_rotation = 0;
+	elem->y_rotation = 0;
+	elem->z_rotation = 0;
+	elem->x_shift = 0;
+	elem->y_shift = 0;
+	elem->z_shift = 0;
 }

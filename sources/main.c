@@ -38,7 +38,7 @@ int			main(int argc, char *argv[])
 	close(fd);
 	init_elem(&elem);
 	render_image(&elem);
-	mlx_key_hook(elem.window, key_down, &elem);
+	mlx_key_hook(elem.window, key_down_one, &elem);
 	mlx_hook(elem.window, 2, (1L << 0), key_trans, &elem);
 	mlx_hook(elem.window, 4, (1L << 2), mouse_trans_pressed, &elem);
 	mlx_hook(elem.window, 5, (1L << 3), mouse_trans_released, &elem);

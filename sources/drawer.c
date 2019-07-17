@@ -6,7 +6,7 @@
 /*   By: nbethany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 22:17:20 by nbethany          #+#    #+#             */
-/*   Updated: 2019/07/17 12:49:22 by wstygg           ###   ########.fr       */
+/*   Updated: 2019/07/17 13:21:19 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,21 @@ int					is_drawn(t_fdf *fdf, t_line line, t_point p0, t_point p1)
 	return (1);
 }
 
-void				draw_line(t_fdf *elem, t_point point0, t_point point1)
+void				draw_line(t_fdf *elem, t_point p0, t_point point1)
 {
 	t_line			line;
 
-	line = set_line(point0, point1);
+	line = set_line(p0, point1);
 	while (1)
 	{
-		if (line.dx > line.dy)
-			line.color_grad = get_percentage_color(point0.x, point1.x, line.x0);
-		else
-			line.color_grad = get_percentage_color(point0.y, point1.y, line.y0);
-		line.color = get_line_color(point0.color, point1.color, line.color_grad);
-		if (!is_drawn(elem, line, point0, point1))
+		(line.dx > line.dy) ?
+			(line.color_grad = get_percentage_color(p0.x, point1.x, line.x0)) :
+			(line.color_grad = get_percentage_color(p0.y, point1.y, line.y0));
+		line.color = get_line_color(p0.color, point1.color, line.color_grad);
+		if (!is_drawn(elem, line, p0, point1))
 			img_pixel_put(&elem->image, line.x0, line.y0, line.color);
-		(line.x0 == line.x1 && line.y0 == line.y1) ? break : 0;
+		if (line.x0 == line.x1 && line.y0 == line.y1)
+			break ;
 		line.error2 = line.error * 2;
 		if (line.error2 > -line.dy)
 		{

@@ -6,7 +6,7 @@
 /*   By: wstygg <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 11:30:53 by wstygg            #+#    #+#             */
-/*   Updated: 2019/07/17 12:25:13 by wstygg           ###   ########.fr       */
+/*   Updated: 2019/07/17 14:10:43 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ double			get_percentage_color(double start, double end, double current);
 int				get_pixel_color(double start, double end, double current);
 int				get_line_color(int color1, int color2, double color_grad);
 int				calculate_color(t_fdf *fdf, t_map *map, t_point point);
+void			fill_struct(t_map *map, t_list *data);
 
 void			img_pixel_put(t_image *img, double x, double y, int color);
 void			initialize_image(t_fdf *fdf);
@@ -145,22 +146,26 @@ void			rotate_x_around(int *y, int *z, double alpha);
 void			rotate_y_around(int *x, int *z, double beta);
 void			rotate_z_around(int *x, int *y, double gamma);
 
-int				key_down(int key, t_fdf *fdf);
-int				key_trans(int key, t_fdf *fdf);
 int				mouse_trans_pressed(int button, int x, int y, t_fdf *fdf);
 int				mouse_trans_moved(int x, int y, t_fdf *fdf);
 int				mouse_trans_released(int button, int x, int y, t_fdf *fdf);
 
 t_point			transform_point(t_fdf *fdf, t_map *map, int row, int column);
 
+void			lstdel(t_list **lst);
+
 void			reset_fdf(t_fdf *elem);
 void			free_fdf(t_fdf *fdf);
 
 void			menu(t_fdf *elem);
 
+int				key_trans(int key, t_fdf *fdf);
+int				key_down_two(int key, t_fdf *fdf);
+int				key_down_one(int key, t_fdf *fdf);
+
 void			clear_background(t_image *img);
-void			draw_line(t_fdf *elem, t_point point_0, t_point point_1);
-void			render_image(t_fdf *fdf);
+void			draw_line(t_fdf *elem, t_point p0, t_point point_1);
+int				render_image(t_fdf *fdf);
 int				index_matr(int row, int column, int map_width);
 
 #endif

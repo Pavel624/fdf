@@ -6,7 +6,7 @@
 /*   By: nbethany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 22:17:20 by nbethany          #+#    #+#             */
-/*   Updated: 2019/07/17 12:15:48 by wstygg           ###   ########.fr       */
+/*   Updated: 2019/07/17 14:09:54 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void			clear_background(t_image *img)
 	}
 }
 
-void			render_image(t_fdf *fdf)
+int				render_image(t_fdf *fdf)
 {
 	t_point		point;
 	int			row;
@@ -79,4 +79,5 @@ void			render_image(t_fdf *fdf)
 	}
 	mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->image.image, 0, 0);
 	menu(fdf);
+	return (1);
 }

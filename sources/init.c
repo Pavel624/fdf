@@ -6,21 +6,11 @@
 /*   By: wstygg <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 12:21:18 by wstygg            #+#    #+#             */
-/*   Updated: 2019/07/17 12:36:53 by wstygg           ###   ########.fr       */
+/*   Updated: 2019/07/17 14:05:09 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
-
-void			reset_fdf(t_fdf *elem)
-{
-	elem->x_rotation = 0;
-	elem->y_rotation = 0;
-	elem->z_rotation = 0;
-	elem->x_shift = 0;
-	elem->y_shift = 0;
-	elem->z_shift = 0;
-}
 
 void			menu(t_fdf *elem)
 {
@@ -47,6 +37,18 @@ void			menu(t_fdf *elem)
 	mlx_string_put(elem->mlx, elem->window, 15, p += 30, TC, "Change colors:");
 	mlx_string_put(elem->mlx, elem->window, 15, p += 20, TC, "NUMPAD [1 - 4]");
 	mlx_string_put(elem->mlx, elem->window, 15, p += 30, TC, "Exit: ESC");
+}
+
+void			init_mouse(t_fdf *fdf)
+{
+	t_mouse		*mouse;
+
+	mouse = &fdf->mouse;
+	mouse->pressed = 0;
+	mouse->x0 = 0;
+	mouse->y0 = 0;
+	mouse->x = 0;
+	mouse->y = 0;
 }
 
 void			init_coord(t_fdf *fdf)
