@@ -50,9 +50,9 @@ int			key_down_two(int key, t_fdf *fdf)
 	}
 	else if (key == KEY_NUMPAD_3)
 	{
-		fdf->color_max = 0xFD00D0;
-		fdf->color_mid = 0x3755CC;
-		fdf->color_min = 0x00FF00;
+		fdf->color_max = 0x51befc;
+		fdf->color_mid = 0x4154e8;
+		fdf->color_min = 0xcc9c00;
 	}
 	else if (key == KEY_NUMPAD_4)
 	{

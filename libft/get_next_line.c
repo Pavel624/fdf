@@ -58,7 +58,7 @@ int	get_next_line(const int fd, char **line)
 	}
 	if (i < 0)
 		return (-1);
-	if (i == 0 && str[fd][0] == '\0')
+	if (i == 0 && (!str[fd] || str[fd][0] == '\0'))
 		return (0);
 	return (new_line(str, line, fd));
 }
