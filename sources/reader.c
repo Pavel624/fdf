@@ -12,6 +12,19 @@
 
 #include "../fdf.h"
 
+int				check_line(char *line)
+{
+	int i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (ft_isdigit(line[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
 static int		get_line(t_map *map, t_list **data, int fd)
 {
 	t_list		*line_data;
@@ -20,7 +33,7 @@ static int		get_line(t_map *map, t_list **data, int fd)
 	line_data = NULL;
 	while ((get_next_line(fd, &line) > 0))
 	{
-		if (!*line)
+		if (!check_line(line))
 			return (0);
 		if (map->width == 0)
 			map->width = (int)ft_count_words(line, ' ');
