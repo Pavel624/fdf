@@ -6,7 +6,7 @@
 /*   By: wstygg <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 11:30:53 by wstygg            #+#    #+#             */
-/*   Updated: 2019/07/17 14:10:43 by wstygg           ###   ########.fr       */
+/*   Updated: 2019/07/17 18:16:48 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void			lstdel(t_list **lst);
 
 void			reset_fdf(t_fdf *elem);
 void			free_fdf(t_fdf *fdf);
-void 			free_split(char ***to_free);
+void			free_split(char ***to_free);
 
 void			menu(t_fdf *elem);
 

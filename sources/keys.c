@@ -6,7 +6,7 @@
 /*   By: wstygg <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/17 13:45:42 by wstygg            #+#    #+#             */
-/*   Updated: 2019/07/17 14:10:39 by wstygg           ###   ########.fr       */
+/*   Updated: 2019/07/17 18:17:20 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int			key_trans(int key, t_fdf *fdf)
 	return (0);
 }
 
-void 		free_split(char ***to_free)
+void		free_split(char ***to_free)
 {
 	char	**split;
 	int		i;
