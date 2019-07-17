@@ -1,6 +1,6 @@
 NAME = fdf
 
-SRC  = main.c reader.c additional.c drawer.c image.c hooks.c colors.c
+SRC  = ./sources/init.c ./sources/main.c ./sources/reader.c ./sources/additional.c ./sources/drawer.c ./sources/image.c ./sources/hooks.c ./sources/colors.c ./sources/rotate.c ./sources/transform.c
 
 OBJ  = $(SRC:.c=.o)
 
@@ -20,11 +20,11 @@ INC_LIB = libft
 
 HEAD = libft/libft.h
 
-RED			= \033[1;31m
-GREEN		= \033[1;32m
-YELLOW		= \033[1;33m
-BLUE		= \033[1;34m
-VIOLET		= \033[1;35m
+RED= \033[1;31m
+GREEN= \033[1;32m
+YELLOW= \033[1;33m
+BLUE= \033[1;34m
+VIOLET= \033[1;35m
 
 all: $(NAME)
 

@@ -6,11 +6,11 @@
 /*   By: nbethany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 20:17:20 by nbethany          #+#    #+#             */
-/*   Updated: 2019/04/16 20:17:22 by nbethany         ###   ########.fr       */
+/*   Updated: 2019/07/17 11:30:02 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../fdf.h"
 
 static int hex_atoi(char *str)
 {

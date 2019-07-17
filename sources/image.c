@@ -6,11 +6,11 @@
 /*   By: nbethany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 22:17:20 by nbethany          #+#    #+#             */
-/*   Updated: 2019/04/19 20:17:22 by nbethany         ###   ########.fr       */
+/*   Updated: 2019/07/17 11:29:47 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../fdf.h"
 
 void	img_pixel_put(t_image *img, double x, double y, int color)
 {

@@ -6,11 +6,11 @@
 /*   By: nbethany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 22:17:20 by nbethany          #+#    #+#             */
-/*   Updated: 2019/04/19 20:17:22 by nbethany         ###   ########.fr       */
+/*   Updated: 2019/07/17 11:29:39 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../fdf.h"
 
 int key_down(int key, t_fdf *fdf)
 {

@@ -6,11 +6,11 @@
 /*   By: nbethany <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/12 19:30:22 by nbethany          #+#    #+#             */
-/*   Updated: 2019/04/12 19:30:52 by nbethany         ###   ########.fr       */
+/*   Updated: 2019/07/17 11:28:55 by wstygg           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../fdf.h"
 
 static	int	close_app(void *param)
 {
