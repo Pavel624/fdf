@@ -112,11 +112,11 @@ void				fill_struct(t_map *map, t_list *data)
 	char			**split;
 
 	current_elem = data;
-	row = map->height - 1;
+	row = map->height;
 	map->max_z = -2147483648;
 	map->min_z = 2147483647;
 	map->min_diff_mid_z = 2147483647;
-	while (row >= 0)
+	while (--row >= 0)
 	{
 		column = map->width - 1;
 		split = ft_strsplit((char *)current_elem->content, ' ');
@@ -126,8 +126,8 @@ void				fill_struct(t_map *map, t_list *data)
 					get_point(map, split[column], row, column);
 			column--;
 		}
-		row--;
 		current_elem = current_elem->next;
+		free_split(&split);
 	}
 	find_mid_z(map);
 }

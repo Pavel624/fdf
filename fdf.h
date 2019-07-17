@@ -156,6 +156,7 @@ void			lstdel(t_list **lst);
 
 void			reset_fdf(t_fdf *elem);
 void			free_fdf(t_fdf *fdf);
+void 			free_split(char ***to_free);
 
 void			menu(t_fdf *elem);
 

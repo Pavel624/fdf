@@ -12,7 +12,7 @@
 
 #include "../fdf.h"
 
-int		key_down_one(int key, t_fdf *fdf)
+int			key_down_one(int key, t_fdf *fdf)
 {
 	if (key == KEY_ESC)
 	{
@@ -34,7 +34,7 @@ int		key_down_one(int key, t_fdf *fdf)
 	return (render_image(fdf));
 }
 
-int		key_down_two(int key, t_fdf *fdf)
+int			key_down_two(int key, t_fdf *fdf)
 {
 	if (key == KEY_NUMPAD_1)
 	{
@@ -63,7 +63,7 @@ int		key_down_two(int key, t_fdf *fdf)
 	return (render_image(fdf));
 }
 
-int		key_trans(int key, t_fdf *fdf)
+int			key_trans(int key, t_fdf *fdf)
 {
 	if (key == KEY_UP)
 		fdf->y_shift -= 5;
@@ -87,4 +87,16 @@ int		key_trans(int key, t_fdf *fdf)
 		fdf->z_rotation -= 0.05;
 	render_image(fdf);
 	return (0);
+}
+
+void 		free_split(char ***to_free)
+{
+	char	**split;
+	int		i;
+
+	split = *to_free;
+	i = 0;
+	while (split[i])
+		free(split[i++]);
+	free(split);
 }
