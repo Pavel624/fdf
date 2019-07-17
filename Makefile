@@ -4,7 +4,7 @@ SRC  = ./sources/keys.c ./sources/fill_struct.c ./sources/init.c ./sources/main.
 
 OBJ  = $(SRC:.c=.o)
 
-FLAGS = -Wall -Werror -Wextra -g -O3
+FLAGS = -Wall -Werror -Wextra -O3
 
 OSVER := $(shell uname -s)
 

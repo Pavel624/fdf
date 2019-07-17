@@ -12,6 +12,10 @@
 
 #include "../fdf.h"
 
+/*
+** Checks line if it has any digits if none is found returns 0 otherwise 1
+*/
+
 int				check_line(char *line)
 {
 	int i;
@@ -25,6 +29,12 @@ int				check_line(char *line)
 	}
 	return (0);
 }
+
+/*
+** Reads a line, checks it for validation and if all is ok
+** adds a line into the list and returns 1 otherwise 0
+*/
+
 static int		get_line(t_map *map, t_list **data, int fd)
 {
 	t_list		*line_data;

@@ -12,6 +12,11 @@
 
 #include "../fdf.h"
 
+/*
+** Finds current posisiton between 2 color and returns
+** a position in percentage
+*/
+
 double			get_percentage_color(double start, double end, double current)
 {
 	double		placement;
@@ -21,6 +26,11 @@ double			get_percentage_color(double start, double end, double current)
 	distance = end - start;
 	return ((distance == 0) ? 1.0 : (placement / distance));
 }
+
+/*
+** Using linear interpolation (get_pixel_color) this function
+** finds a value for ecah color channel and then returns decimal value of color
+*/
 
 int				get_line_color(int color1, int color2, double color_grad)
 {

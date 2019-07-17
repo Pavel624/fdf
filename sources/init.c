@@ -51,6 +51,11 @@ void			init_mouse(t_fdf *fdf)
 	mouse->y = 0;
 }
 
+/*
+** Initializes buffer with MIN_INT for right
+** hidden lines drawing in drawer.c
+*/
+
 void			init_coord(t_fdf *fdf)
 {
 	int			i;
